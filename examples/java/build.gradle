@@ -1,0 +1,32 @@
+// see https://docs.gradle.org/3.1/userguide/java_plugin.html
+// see https://docs.gradle.org/3.1/userguide/application_plugin.html
+// see http://imperceptiblethoughts.com/shadow/
+
+plugins {
+    id 'com.github.johnrengelman.shadow' version '1.2.4'
+}
+
+apply plugin: 'application'
+
+mainClassName = 'Example'
+version = '1.0.0'
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+jar {
+    manifest {
+        attributes(
+            'Implementation-Title': 'SQL Server Example',
+            'Implementation-Version': version,
+            'Main-Class': mainClassName
+        )
+    }
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compile 'com.microsoft.sqlserver:mssql-jdbc:6.1.2.jre8-preview'
+}
