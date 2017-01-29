@@ -9,6 +9,7 @@ It will:
     * SQL Server Users: `alice.doe` (in the `sysadmin` role), `carol.doe`, `eve.doe` and `grace.doe`.
     * Windows Users: `bob.doe`, `dave.doe`, `frank.doe` and `henry.doe`.
     * All have the `HeyH0Password` password.
+* Run PowerShell, Python, Java and C# [examples](examples/).
 
 
 # Usage
