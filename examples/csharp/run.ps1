@@ -3,14 +3,12 @@
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 
 # install the dotnet sdk.
-# see https://github.com/dotnet/cli/releases/tag/v1.0.0-preview4-004233
-# see https://github.com/dotnet/core/blob/master/release-notes/preview4-download.md
-# see https://docs.microsoft.com/en-us/dotnet/articles/core/preview3/tools/
-$cliVersion = '1.0.0-preview4-004233'
+# see https://blogs.msdn.microsoft.com/dotnet/2017/01/30/announcing-net-core-net-native-and-nuget-updates-in-vs-2017-rc/
+$cliVersion = '1.0.0-rc3-004530'
 $cliHome = "c:\ProgramData\dotnet-sdk-$cliVersion"
 $archiveName = "dotnet-dev-win-x64.$cliVersion.zip"
 $archivePath = "$env:TEMP\$archiveName"
-Invoke-WebRequest "https://download.microsoft.com/download/7/E/8/7E8BD9BD-2892-4848-BA01-76493DECC138/$archiveName" -UseBasicParsing -OutFile $archivePath
+Invoke-WebRequest "https://download.microsoft.com/download/9/7/1/97197CC0-EC7D-45CA-979C-2ABF9B5508A3/$archiveName" -UseBasicParsing -OutFile $archivePath
 Expand-Archive $archivePath -DestinationPath $cliHome
 Remove-Item $archivePath
 
@@ -30,5 +28,6 @@ dotnet --info
 dotnet restore
 
 # build and run.
-dotnet --verbose build --configuration Release
-dotnet --verbose run --configuration Release
+# NB the --verbose flag is no longer supported in 1.0.0-rc3... see https://github.com/dotnet/cli/issues/5516
+dotnet build --configuration Release
+dotnet run --configuration Release
