@@ -28,6 +28,5 @@ dotnet --info
 dotnet restore
 
 # build and run.
-# NB the --verbose flag is no longer supported in 1.0.0-rc3... see https://github.com/dotnet/cli/issues/5516
-dotnet build --configuration Release
-dotnet run --configuration Release
+dotnet --diagnostics build --configuration Release
+dotnet --diagnostics run --configuration Release
