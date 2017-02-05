@@ -6,9 +6,14 @@ It will:
   * Mixed mode authentication
   * Allow TCP/IP connections
 * Create Users
-    * SQL Server Users: `alice.doe` (in the `sysadmin` role), `carol.doe`, `eve.doe` and `grace.doe`.
-    * Windows Users: `bob.doe`, `dave.doe`, `frank.doe` and `henry.doe`.
-    * All have the `HeyH0Password` password.
+  * SQL Server Users: `alice.doe` (in the `sysadmin` role), `carol.doe`, `eve.doe` and `grace.doe`.
+  * Windows Users: `bob.doe`, `dave.doe`, `frank.doe` and `henry.doe`.
+  * All have the `HeyH0Password` password.
+* Create the `TheSimpsons` Database
+  * Create the `db_executor` database role with permissions to execute stored procedures.
+  * Add users to database roles
+    * `carol.doe` in the `db_datawriter`, `db_datareader` and `db_executor` roles.
+    * `eve.doe` in the `db_datareader` and `db_executor` roles.
 * Run PowerShell, Python, Java and C# [examples](examples/).
 
 
