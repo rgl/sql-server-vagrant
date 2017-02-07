@@ -6,13 +6,18 @@ import java.sql.Statement;
 
 public class Example {
     public static void main(String[] args) throws Exception {
-        String connectionString = "jdbc:sqlserver://localhost:1433;database=master;user=alice.doe;password=HeyH0Password;";
+        String connectionString = String.format(
+            "jdbc:sqlserver://%s:1433;database=master;user=alice.doe;password=HeyH0Password;",
+            System.getenv("COMPUTERNAME"));
 
         System.out.println("SQL Server Version:");
         System.out.println(queryScalar(connectionString, "select @@version"));
 
         System.out.println("SQL Server User Name (alice.doe; username/password credentials; TCP/IP connection):");
         System.out.println(queryScalar(connectionString, "select suser_name()"));
+
+        System.out.println("Is this SQL Server connection encrypted? (alice.doe; username/password credentials; Encrypted TCP/IP connection):");
+        System.out.println(queryScalar(connectionString + ";encrypt=true", "select encrypt_option from sys.dm_exec_connections where session_id=@@SPID"));
     }
 
     private static String queryScalar(String connectionString, String sql) throws Exception {

@@ -8,6 +8,7 @@ $cliVersion = '1.0.0-rc3-004530'
 $cliHome = "c:\ProgramData\dotnet-sdk-$cliVersion"
 $archiveName = "dotnet-dev-win-x64.$cliVersion.zip"
 $archivePath = "$env:TEMP\$archiveName"
+Write-Host "Downloading $archiveName..."
 Invoke-WebRequest "https://download.microsoft.com/download/9/7/1/97197CC0-EC7D-45CA-979C-2ABF9B5508A3/$archiveName" -UseBasicParsing -OutFile $archivePath
 Expand-Archive $archivePath -DestinationPath $cliHome
 Remove-Item $archivePath
