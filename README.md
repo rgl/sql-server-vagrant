@@ -35,6 +35,7 @@ List active connections details:
 select
   c.client_net_address,
   s.login_name,
+  DB_NAME(s.database_id) as db_name,
   s.program_name,
   c.encrypt_option,
   c.connect_time
