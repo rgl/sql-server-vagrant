@@ -3,14 +3,13 @@
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 
 # install the dotnet sdk.
-# see https://github.com/dotnet/cli/releases/tag/v1.0.0-rc4-004771
-# see https://blogs.msdn.microsoft.com/dotnet/2017/02/07/announcing-net-core-tools-updates-in-vs-2017-rc/
-$cliVersion = '1.0.0-rc4-004771'
+# see https://github.com/dotnet/cli/releases/tag/v1.0.1
+$cliVersion = '1.0.1'
 $cliHome = "c:\ProgramData\dotnet-sdk-$cliVersion"
 $archiveName = "dotnet-dev-win-x64.$cliVersion.zip"
 $archivePath = "$env:TEMP\$archiveName"
 Write-Host "Downloading $archiveName..."
-Invoke-WebRequest "https://download.microsoft.com/download/B/4/6/B4678511-01F4-4F97-902B-0E58A985932A/$archiveName" -UseBasicParsing -OutFile $archivePath
+Invoke-WebRequest "https://download.microsoft.com/download/F/D/5/FD52A2F7-65B6-4912-AEDD-4015DF6D8D22/$archiveName" -UseBasicParsing -OutFile $archivePath
 Expand-Archive $archivePath -DestinationPath $cliHome
 Remove-Item $archivePath
 
@@ -20,7 +19,7 @@ Remove-Item $archivePath
     "$([Environment]::GetEnvironmentVariable('PATH', 'Machine'));$cliHome",
     'Machine')
 
-# add dotnet to the current PATH.
+# add dotnet to the current process PATH.
 $env:PATH += ";$cliHome"
 
 # show information about dotnet.
