@@ -254,6 +254,15 @@ Install-ChocolateyShortcut `
     -Arguments '-run {MSYS2} -icon C:\tools\msys64\msys2.ico' `
     -IconLocation C:\tools\msys64\msys2.ico `
     -WorkingDirectory '%USERPROFILE%'
+# add DBeaver shortcut to the Desktop and Start Menu.
+Install-ChocolateyShortcut `
+    -ShortcutFilePath "$env:USERPROFILE\Desktop\DBeaver.lnk" `
+    -TargetPath 'C:\Program Files\DBeaver\dbeaver.exe' `
+    -WorkingDirectory '%USERPROFILE%'
+Install-ChocolateyShortcut `
+    -ShortcutFilePath "C:\Users\All Users\Microsoft\Windows\Start Menu\Programs\DBeaver.lnk" `
+    -TargetPath 'C:\Program Files\DBeaver\dbeaver.exe' `
+    -WorkingDirectory '%USERPROFILE%'
 '@)
 New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\RunOnce -Force `
     | New-ItemProperty -Name ConfigureTaskbar -Value 'PowerShell -WindowStyle Hidden -File "%TEMP%\ConfigureTaskbar.ps1"' -PropertyType ExpandString `
