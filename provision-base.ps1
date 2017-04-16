@@ -256,6 +256,3 @@ Install-ChocolateyShortcut `
 New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\RunOnce -Force `
     | New-ItemProperty -Name ConfigureTaskbar -Value 'PowerShell -WindowStyle Hidden -File "%TEMP%\ConfigureTaskbar.ps1"' -PropertyType ExpandString `
     | Out-Null
-
-Write-Host 'Uninstalling Windows Defender...'
-Uninstall-WindowsFeature Windows-Defender-Features

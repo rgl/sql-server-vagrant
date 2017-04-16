@@ -11,9 +11,10 @@ Vagrant.configure("2") do |config|
     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
   end
   config.vm.network :private_network, ip: '10.10.10.100'
+  config.vm.provision "shell", inline: "Uninstall-WindowsFeature Windows-Defender-Features" # because defender slows things down a lot.
+  config.vm.provision "reload"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-chocolatey.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-base.ps1"
-  config.vm.provision :reload
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-network-encryption.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlps.ps1"
