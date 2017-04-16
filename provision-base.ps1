@@ -51,19 +51,21 @@ New-Item -Path HKLM:Software\Policies\Microsoft\Windows\Personalization -Force `
 
 # replace notepad with notepad++.
 choco install -y notepadplusplus.install
-# see http://sbs.seandaniel.com/2009/03/replacing-windows-applications-safe-way.html
-[IO.File]::WriteAllText(
-    'C:\Program Files\Notepad++\launch.js',
-    @'
-var cmd = '"C:\\Program Files\\Notepad++\\notepad++.exe"';
-for (var n = 1; n < WSH.Arguments.Length; ++n) {
-    cmd += ' "' + WSH.Arguments.Item(n) + '"'; // TODO do proper escaping.
+$archiveUrl = 'https://github.com/rgl/ApplicationReplacer/releases/download/v0.0.1/ApplicationReplacer.zip'
+$archiveHash = 'aeba158e5c7a6ecaaa95c8275b5bb4d6e032e016c6419adebb94f4e939b9a918'
+$archiveName = Split-Path $archiveUrl -Leaf
+$archivePath = "$env:TEMP\$archiveName"
+Invoke-WebRequest $archiveUrl -UseBasicParsing -OutFile $archivePath
+$archiveActualHash = (Get-FileHash $archivePath -Algorithm SHA256).Hash
+if ($archiveHash -ne $archiveActualHash) {
+    throw "$archiveName downloaded from $archiveUrl to $archivePath has $archiveActualHash hash witch does not match the expected $archiveHash"
 }
-//WSH.echo(cmd);
-WSH.CreateObject("WScript.Shell").Run(cmd);
-'@)
-New-Item -Force -Path 'HKLM:SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe' `
-    | Set-ItemProperty -Name Debugger -Value 'wscript "C:\Program Files\Notepad++\launch.js"'
+Expand-Archive $archivePath -DestinationPath 'C:\Program Files\ApplicationReplacer'
+Remove-Item $archivePath
+New-Item -Force -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe' `
+    | Set-ItemProperty `
+        -Name Debugger `
+        -Value '"C:\Program Files\ApplicationReplacer\ApplicationReplacer.exe" -- "C:\Program Files\Notepad++\notepad++.exe"'
 
 # install 7zip.
 choco install -y 7zip.install
