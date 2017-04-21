@@ -56,4 +56,9 @@ gradle shadowJar
 
 # run the example.
 # NB gradle run would also work, but this shows how a user would use the fat jar.
-java -jar build/libs/example-1.0.0-all.jar
+# NB for using the integrated authentication we must have sqljdbc_auth.dll in the
+#    current directory, %PATH%, or inside one of the directories defined in the
+#    java.library.path java property (as done here; it points to the drivers
+#    installed by the sqljdbc chocolatey package).
+$javaLibraryPath = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*\enu\auth\x64').Path
+java "-Djava.library.path=$javaLibraryPath" -jar build/libs/example-1.0.0-all.jar

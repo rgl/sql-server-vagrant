@@ -6,12 +6,19 @@ import java.sql.Statement;
 
 public class Example {
     public static void main(String[] args) throws Exception {
-        String connectionString = String.format(
-            "jdbc:sqlserver://%s:1433;database=master;user=alice.doe;password=HeyH0Password;",
+        String integratedSecurityConnectionString = String.format(
+            "jdbc:sqlserver://%s:1433;database=master;integratedSecurity=true;",
             System.getenv("COMPUTERNAME"));
 
         System.out.println("SQL Server Version:");
-        System.out.println(queryScalar(connectionString, "select @@version"));
+        System.out.println(queryScalar(integratedSecurityConnectionString, "select @@version"));
+
+        System.out.println("SQL Server User Name (integrated authentication credentials; TCP/IP connection):");
+        System.out.println(queryScalar(integratedSecurityConnectionString, "select suser_name()"));
+
+        String connectionString = String.format(
+            "jdbc:sqlserver://%s:1433;database=master;user=alice.doe;password=HeyH0Password;",
+            System.getenv("COMPUTERNAME"));
 
         System.out.println("SQL Server User Name (alice.doe; username/password credentials; TCP/IP connection):");
         System.out.println(queryScalar(connectionString, "select suser_name()"));
