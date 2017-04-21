@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<data-sources>
+	<data-source id="mssql_ms-15b8f2ad95a-6261e35077c5a4aa" provider="generic" driver="mssql_ms" name="MS SQL Server - local" save-password="true" show-system-objects="true" read-only="false">
+		<connection host="localhost" port="1433" server="" database="" url="jdbc:sqlserver://localhost:1433" type="dev">
+			<property name="integratedSecurity" value="true"/>
+			<property name="applicationName" value="DBeaver"/>
+		</connection>
+	</data-source>
+</data-sources>

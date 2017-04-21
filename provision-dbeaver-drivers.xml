@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<drivers>
+	<provider id="generic">
+		<driver id="mssql_ms" category="MS SQL Server" custom="false" embedded="false" name="Microsoft Driver" class="com.microsoft.sqlserver.jdbc.SQLServerDriver" url="jdbc:sqlserver://{host}[:{port}][;databaseName={database}]" port="1433" description="Microsoft JDBC Driver for SQL Server">
+			<library type="jar" path="repo:/drivers/mssql/sqljdbc4.jar" custom="false" disabled="true"/>
+			<library type="lib" path="repo:/drivers/mssql/auth/x86/sqljdbc_auth.dll" custom="false" disabled="true"/>
+			<library type="lib" path="repo:/drivers/mssql/auth/x64/sqljdbc_auth.dll" custom="false" disabled="true"/>
+			<library type="lib" path="repo:/drivers/mssql/xa/x86/sqljdbc_xa.dll" custom="false" disabled="true"/>
+			<library type="lib" path="repo:/drivers/mssql/xa/x64/sqljdbc_xa.dll" custom="false" disabled="true"/>
+			<library type="license" path="repo:/drivers/mssql/LICENSE.txt" custom="false" disabled="true"/>
+			<library type="jar" path="@@SQLJDBC_HOME@@\jre8\sqljdbc42.jar" custom="true"/>
+			<library type="lib" path="@@SQLJDBC_HOME@@\auth\x64\sqljdbc_auth.dll" custom="true"/>
+		</driver>
+	</provider>
+</drivers>
