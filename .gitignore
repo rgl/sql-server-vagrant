@@ -4,3 +4,4 @@ build/
 bin/
 obj/
 tmp/
+*.exe

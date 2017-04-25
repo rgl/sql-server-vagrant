@@ -70,6 +70,29 @@ New-Item -Force -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image 
 # install 7zip.
 choco install -y 7zip.install
 
+# install git.
+choco install -y git --params '/GitOnlyOnPath /NoAutoCrlf'
+choco install -y gitextensions
+choco install -y meld
+
+# update $env:PATH with the recently installed Chocolatey packages.
+Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
+Update-SessionEnvironment
+
+# configure git.
+# see http://stackoverflow.com/a/12492094/477532
+git config --global user.name 'Rui Lopes'
+git config --global user.email 'rgl@ruilopes.com'
+git config --global push.default simple
+git config --global core.autocrlf false
+git config --global diff.guitool meld
+git config --global difftool.meld.path 'C:/Program Files (x86)/Meld/Meld.exe'
+git config --global difftool.meld.cmd '\"C:/Program Files (x86)/Meld/Meld.exe\" \"$LOCAL\" \"$REMOTE\"'
+git config --global merge.tool meld
+git config --global mergetool.meld.path 'C:/Program Files (x86)/Meld/Meld.exe'
+git config --global mergetool.meld.cmd '\"C:/Program Files (x86)/Meld/Meld.exe\" --diff \"$LOCAL\" \"$BASE\" \"$REMOTE\" --output \"$MERGED\"'
+#git config --list --show-origin
+
 # install Visual Studio Code.
 choco install -y visualstudiocode
 
