@@ -1,4 +1,4 @@
-This is an example Vagrant environment for a SQL Server 2014 Express installation.
+This is an example Vagrant environment for a SQL Server 2016 Express installation.
 
 It will:
 

@@ -1,7 +1,5 @@
 # install SQL Server.
-# TODO for some reason the install is failing with -2022834173 or -2068119551... but it seems
-#      to be installed anyhow... so for now, just ignore that exit code. 
-Start-Choco -Arguments install,-y,mssqlserver2014express -SuccessExitCodes 0,-2022834173,-2068119551
+choco install -y sql-server-express
 
 # update $env:PSModulePath to include the modules installed by recently installed Chocolatey packages.
 $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
