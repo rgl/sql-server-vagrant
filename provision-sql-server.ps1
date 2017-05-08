@@ -49,7 +49,7 @@ $testUsers = @(
 # create SQL Server accounts for the women.
 Write-Host 'Creating SQL Server Users...'
 $testUsers | ForEach-Object {$i=0} { if (![bool]($i++ % 2)) {$_}} | ForEach-Object {
-    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $instanceName, $_
+    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $instanceName,$_
     $login.LoginType = 'SqlLogin'
     $login.PasswordPolicyEnforced = $false
     $login.PasswordExpirationEnabled = $false
@@ -60,7 +60,7 @@ $sysadminRole = $server.Roles['sysadmin']
 $sysadminRole.AddMember('alice.doe')
 $sysadminRole.Alter()
 # create Windows accounts for the men.
-Write-Host 'Creating Windows Users...'
+Write-Host 'Creating Windows Users and adding them to SQL Server...'
 $testUsers | ForEach-Object {$i=0} { if ([bool]($i++ % 2)) {$_}} | ForEach-Object {
     # see the ADS_USER_FLAG_ENUM enumeration at https://msdn.microsoft.com/en-us/library/aa772300(v=vs.85).aspx
     $AdsScript              = 0x00001
@@ -75,6 +75,12 @@ $testUsers | ForEach-Object {$i=0} { if ([bool]($i++ % 2)) {$_}} | ForEach-Objec
     $user.SetInfo()
     # add the user to the Users group.
     ([ADSI]'WinNT://./Users,Group').Add("WinNT://$_,User")
+    # add the Windows user to SQL Server.
+    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $instanceName,"$env:COMPUTERNAME\$_"
+    $login.LoginType = 'WindowsUser'
+    $login.PasswordPolicyEnforced = $false
+    $login.PasswordExpirationEnabled = $false
+    $login.Create()
 }
 
 # restart it to be able to use the recently added users.
@@ -89,4 +95,3 @@ New-NetFirewallRule `
     -Protocol TCP `
     -LocalPort 1433 `
     | Out-Null
-
