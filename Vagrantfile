@@ -3,7 +3,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |vb|
     vb.linked_clone = true
     vb.gui = true
-    vb.memory = 2048
+    vb.memory = 4096
     vb.customize ["modifyvm", :id, "--vram", 256]
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     vb.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
@@ -15,6 +15,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "ps.ps1", args: "provision-base.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-network-encryption.ps1"
+  config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-management-studio.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-dbeaver.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlps.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlclient.ps1"

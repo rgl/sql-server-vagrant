@@ -286,6 +286,10 @@ Install-ChocolateyShortcut `
     -ShortcutFilePath "C:\Users\All Users\Microsoft\Windows\Start Menu\Programs\DBeaver.lnk" `
     -TargetPath 'C:\Program Files\DBeaver\dbeaver.exe' `
     -WorkingDirectory '%USERPROFILE%'
+# add SQL Server Management Studio shortcut to the Desktop.
+Install-ChocolateyShortcut `
+    -ShortcutFilePath "$env:USERPROFILE\Desktop\SQL Server Management Studio.lnk" `
+    -TargetPath 'C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\Ssms.exe'
 '@)
 New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\RunOnce -Force `
     | New-ItemProperty -Name ConfigureTaskbar -Value 'PowerShell -WindowStyle Hidden -File "%TEMP%\ConfigureTaskbar.ps1"' -PropertyType ExpandString `
