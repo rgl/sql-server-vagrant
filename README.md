@@ -50,3 +50,25 @@ order by
 
 **NB** you can customize what appears on `s.program_name` by setting the `Application Name`
 connection string property, e.g., `Application Name=Example Application;`.
+
+## List database principals permissions
+
+```sql
+select
+  principals.principal_id,
+  principals.name,
+  principals.type_desc, 
+  principals.authentication_type_desc,
+  permissions.state_desc,
+  permissions.permission_name
+from
+  sys.database_principals as principals
+  inner join sys.database_permissions as permissions
+    on principals.principal_id=permissions.grantee_principal_id
+order by
+  principals.name,
+  principals.type_desc,
+  principals.authentication_type_desc,
+  permissions.state_desc,
+  permissions.permission_name
+```
