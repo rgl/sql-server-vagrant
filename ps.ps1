@@ -4,15 +4,19 @@ param(
 )
 
 Set-StrictMode -Version Latest
-
+$ProgressPreference = 'SilentlyContinue'
 $ErrorActionPreference = 'Stop'
-
 trap {
     Write-Output "ERROR: $_"
     Write-Output (($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1')
     Write-Output (($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1')
     Exit 1
 }
+
+# enable TLS 1.1 and 1.2.
+[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol `
+    -bor [Net.SecurityProtocolType]::Tls11 `
+    -bor [Net.SecurityProtocolType]::Tls12
 
 # wrap the choco command (to make sure this script aborts when it fails).
 function Start-Choco([string[]]$Arguments, [int[]]$SuccessExitCodes=@(0)) {

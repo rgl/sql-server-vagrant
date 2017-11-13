@@ -78,7 +78,7 @@ public static class WindowsWallpaper
 
 Write-Host 'Setting the Lock Screen Background...'
 $backgroundPath = 'C:\Windows\Web\Screen\7cdfzmllwom-william-bout.jpg'
-(New-Object System.Net.WebClient).DownloadFile('http://unsplash.com/photos/7cdFZmLlWOM/download?force=true', $backgroundPath)
+(New-Object System.Net.WebClient).DownloadFile('https://unsplash.com/photos/7cdFZmLlWOM/download?force=true', $backgroundPath)
 New-Item -Path HKLM:Software\Policies\Microsoft\Windows\Personalization -Force `
     | New-ItemProperty -Name LockScreenImage -Value $backgroundPath `
     | New-ItemProperty -Name PersonalColors_Background -Value '#1e1e1e' `
