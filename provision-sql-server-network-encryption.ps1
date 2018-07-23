@@ -47,7 +47,7 @@ if [ ! -f $ca_file_name-crt.pem ]; then
             basicConstraints=critical,CA:TRUE,pathlen:0
             keyUsage=critical,digitalSignature,keyCertSign,cRLSign
             ") \
-        -days 90 \
+        -days $(5*365) \
         -in  $ca_file_name-csr.pem \
         -out $ca_file_name-crt.pem
     openssl x509 \
@@ -79,7 +79,7 @@ if [ ! -f $domain-crt.pem ]; then
             subjectAltName=DNS:$domain,IP:$ip
             extendedKeyUsage=critical,serverAuth
             ") \
-        -days 90 \
+        -days $(5*365) \
         -in  $domain-csr.pem \
         -out $domain-crt.pem
     openssl pkcs12 -export \
