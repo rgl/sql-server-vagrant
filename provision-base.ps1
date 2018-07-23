@@ -131,6 +131,8 @@ git config --global mergetool.meld.cmd '\"C:/Program Files (x86)/Meld/Meld.exe\"
 
 # install Visual Studio Code.
 choco install -y visualstudiocode
+Update-SessionEnvironment
+code --install-extension ms-mssql.mssql
 
 # install Google Chrome.
 # see https://www.chromium.org/administrators/configuring-other-preferences
