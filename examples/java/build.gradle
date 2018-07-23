@@ -28,5 +28,5 @@ repositories {
 }
 
 dependencies {
-    compile 'com.microsoft.sqlserver:mssql-jdbc:6.2.1.jre8'
+    compile 'com.microsoft.sqlserver:mssql-jdbc:6.4.0.jre8'
 }
