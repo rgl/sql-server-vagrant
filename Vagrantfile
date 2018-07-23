@@ -1,15 +1,26 @@
 Vagrant.configure("2") do |config|
   config.vm.box = "windows-2016-amd64"
-  config.vm.provider "virtualbox" do |vb|
+
+  config.vm.provider "libvirt" do |lv, config|
+    lv.memory = 4*1024
+    lv.cpus = 2
+    lv.cpu_mode = "host-passthrough"
+    #lv.nested = true
+    lv.keymap = "pt"
+    config.vm.synced_folder ".", "/vagrant", type: "smb", smb_username: ENV["USER"], smb_password: ENV["VAGRANT_SMB_PASSWORD"]
+  end
+
+  config.vm.provider "virtualbox" do |vb, config|
     vb.linked_clone = true
-    vb.gui = true
-    vb.memory = 4096
+    vb.memory = 4*1024
     vb.customize ["modifyvm", :id, "--vram", 256]
     vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
     vb.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
     vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
     vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
+    config.vm.synced_folder ".", "/vagrant", type: "smb", smb_username: ENV["USER"], smb_password: ENV["VAGRANT_SMB_PASSWORD"]
   end
+  
   config.vm.hostname = 'mssql'
   config.vm.network :private_network, ip: '10.10.10.100'
   config.vm.provision "shell", path: "ps.ps1", args: "provision-chocolatey.ps1"
