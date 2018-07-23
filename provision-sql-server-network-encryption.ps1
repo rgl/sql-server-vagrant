@@ -111,12 +111,13 @@ Import-PfxCertificate `
 
 Write-Host "Configuring SQL Server to allow encrypted connections at $domain..."
 $certificate = Get-ChildItem -DnsName $domain Cert:\LocalMachine\My
+$superSocketNetLibPath = Resolve-Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL*.SQLEXPRESS\MSSQLServer\SuperSocketNetLib'
 Set-ItemProperty `
-    -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQLServer\SuperSocketNetLib' `
+    -Path $superSocketNetLibPath `
     -Name Certificate `
     -Value $certificate.Thumbprint
 Set-ItemProperty `
-    -Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL13.SQLEXPRESS\MSSQLServer\SuperSocketNetLib' `
+    -Path $superSocketNetLibPath `
     -Name ForceEncryption `
     -Value 0 # NB set to 1 to force all connections to be encrypted.
 
