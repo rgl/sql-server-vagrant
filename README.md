@@ -36,16 +36,18 @@ List active connections details:
 select
   c.client_net_address,
   s.login_name,
-  DB_NAME(s.database_id) as db_name,
+  db_name(s.database_id) as database_name,
   s.program_name,
   c.encrypt_option,
   c.connect_time
 from
   sys.dm_exec_connections as c
   inner join sys.dm_exec_sessions as s
-    on c.session_id=s.session_id
+    on c.session_id = s.session_id
 order by
-  c.client_net_address, s.login_name, s.program_name
+  c.client_net_address,
+  s.login_name,
+  s.program_name
 ```
 
 **NB** you can customize what appears on `s.program_name` by setting the `Application Name`
@@ -64,11 +66,55 @@ select
 from
   sys.database_principals as principals
   inner join sys.database_permissions as permissions
-    on principals.principal_id=permissions.grantee_principal_id
+    on principals.principal_id = permissions.grantee_principal_id
 order by
   principals.name,
   principals.type_desc,
   principals.authentication_type_desc,
   permissions.state_desc,
   permissions.permission_name
+```
+
+## List database schema tables row count
+
+```sql
+select
+  schema_name(schema_id) as schema_name,
+  t.name as table_name,
+  sum(p.rows) as row_count
+from
+  sys.tables as t
+  inner join sys.partitions as p
+    on t.object_id = p.object_id
+    and p.index_id in (0, 1)
+group by
+  schema_name(schema_id),
+  t.name
+```
+
+## List database row count and storage usage
+
+```sql
+select
+  sum(p.rows) as row_count,
+  (select cast(sum(case when type = 1 then size end) * 8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as data_size_bytes,
+  (select cast(sum(case when type = 0 then size end) * 8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as log_size_bytes
+from
+  sys.tables as t
+  inner join sys.partitions as p
+    on t.object_id = p.object_id
+    and p.index_id in (0, 1)
+```
+
+## List databases storage usage
+
+```sql
+select
+  db_name(database_id) as database_name,
+  cast(sum(case when type = 1 then size end) * 8 * 1024 as bigint) as data_size_bytes,
+  cast(sum(case when type = 0 then size end) * 8 * 1024 as bigint) as log_size_bytes
+from
+  sys.master_files
+group by
+  database_id
 ```
