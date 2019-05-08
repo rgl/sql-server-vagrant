@@ -97,8 +97,8 @@ group by
 ```sql
 select
   sum(p.rows) as row_count,
-  (select cast(sum(case when type = 1 then size end) * 8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as data_size_bytes,
-  (select cast(sum(case when type = 0 then size end) * 8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as log_size_bytes
+  (select sum(case when type = 1 then size end) * cast(8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as data_size_bytes,
+  (select sum(case when type = 0 then size end) * cast(8 * 1024 as bigint) from sys.master_files where database_id = db_id()) as log_size_bytes
 from
   sys.tables as t
   inner join sys.partitions as p
@@ -110,11 +110,11 @@ from
 
 ```sql
 select
-  db_name(database_id) as database_name,
-  cast(sum(case when type = 1 then size end) * 8 * 1024 as bigint) as data_size_bytes,
-  cast(sum(case when type = 0 then size end) * 8 * 1024 as bigint) as log_size_bytes
+  db_name(database_id) as database_name,
+  sum(case when type = 1 then size end) * cast(8 * 1024 as bigint) as data_size_bytes,
+  sum(case when type = 0 then size end) * cast(8 * 1024 as bigint) as log_size_bytes
 from
-  sys.master_files
+  sys.master_files
 group by
-  database_id
+  database_id
 ```
