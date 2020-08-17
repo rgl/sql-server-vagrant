@@ -21,9 +21,9 @@ It will:
 
 # Usage
 
-Install the [base box](https://github.com/rgl/windows-2016-vagrant).
+Install the [Windows 2019 base box](https://github.com/rgl/windows-vagrant).
 
-Run `vagrant up` to launch the environment.
+Run `vagrant up --no-destroy-on-error` to launch the environment.
 
 
 # Example queries
