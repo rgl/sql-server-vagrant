@@ -130,7 +130,7 @@ git config --global mergetool.meld.cmd '\"C:/Program Files (x86)/Meld/Meld.exe\"
 #git config --list --show-origin
 
 # install Visual Studio Code.
-choco install -y visualstudiocode
+choco install -y vscode
 Update-SessionEnvironment
 code --install-extension ms-mssql.mssql
 
