@@ -143,15 +143,7 @@ cp -Force GoogleChrome-master_preferences.json "$chromeLocation\master_preferenc
 cp -Force GoogleChrome-master_bookmarks.html "$chromeLocation\master_bookmarks.html"
 
 # install msys2.
-# NB we have to manually build the msys2 package from source because the
-#    current chocolatey package is somewhat brittle to install.
-Push-Location $env:TEMP
-Invoke-RestMethod https://github.com/rgl/choco-packages/archive/master.zip -OutFile choco-packages-master.zip
-Expand-Archive choco-packages-master.zip .
-Set-Location choco-packages-master/msys2
-choco pack
-choco install -y msys2 -Source $PWD
-Pop-Location
+choco install -y msys2
 
 # configure the msys2 launcher to let the shell inherith the PATH.
 $msys2BasePath = 'C:\tools\msys64'
