@@ -1,5 +1,5 @@
 # install python.
-choco install -y python
+choco install -y python --version 3.8.5
 
 # update $env:PATH with the recently installed Chocolatey packages.
 Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
