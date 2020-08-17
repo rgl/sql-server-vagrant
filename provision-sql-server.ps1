@@ -1,5 +1,5 @@
 # install SQL Server.
-choco install -y sql-server-express
+choco install -y sql-server-express --version 2019.20200409 # SQL Server 2019 Express.
 
 # update $env:PSModulePath to include the modules installed by recently installed Chocolatey packages.
 $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
