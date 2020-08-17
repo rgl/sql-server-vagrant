@@ -1,8 +1,8 @@
 # install go.
-choco install -y golang
+choco install -y golang --version 1.15
 
 # setup the current process environment.
-$env:GOROOT = 'C:\tools\go'
+$env:GOROOT = 'C:\Go'
 $env:PATH += ";$env:GOROOT\bin"
 
 # setup the Machine environment.
@@ -14,9 +14,6 @@ $env:PATH += ";$env:GOROOT\bin"
 
 Write-Host '# go env'
 go env
-
-Write-Host '# install dependencies'
-go get -v github.com/denisenkom/go-mssqldb
 
 Write-Host '# build and run'
 $p = Start-Process go 'build','-v' `
