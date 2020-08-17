@@ -1,5 +1,6 @@
 # install dependencies.
-choco install -y jdk8 gradle
+choco install -y adoptopenjdk11 --version 11.0.8.11
+choco install -y gradle --version 6.6
 
 # update $env:PATH with the recently installed Chocolatey packages.
 Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
@@ -7,8 +8,7 @@ Update-SessionEnvironment
 
 # add our Example CA certificate to the default java trust store.
 @(
-    'C:\Program Files\Java\jre*\lib\security\cacerts'
-    'C:\Program Files\Java\jdk*\jre\lib\security\cacerts'
+    'C:\Program Files\AdoptOpenJDK\*\lib\security\cacerts'
 ) | ForEach-Object {Get-ChildItem $_} | ForEach-Object {
     $keyStore = $_
     $alias = 'Example CA'
@@ -17,7 +17,7 @@ Update-SessionEnvironment
         -noprompt `
         -list `
         -storepass changeit `
-        -keystore "$keyStore" `
+        -cacerts `
         -alias "$alias"
     if ($keytoolOutput -match 'keytool error: java.lang.Exception: Alias .+ does not exist') {
         Write-Host "Adding $alias to the java $keyStore keystore..."
@@ -32,7 +32,7 @@ Update-SessionEnvironment
                 '-import',
                 '-trustcacerts',
                 '-storepass changeit',
-                "-keystore `"$keyStore`"",
+                '-cacerts',
                 "-alias `"$alias`"",
                 '-file c:\vagrant\tmp\ca\example-ca-crt.der' `
             -RedirectStandardOutput "$env:TEMP\keytool-stdout.txt" `
