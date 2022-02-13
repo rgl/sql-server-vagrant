@@ -1,5 +1,6 @@
 # install the SQL Server JDBC driver.
-choco install -y sqljdbc --version 7.0.0.0
+# see https://community.chocolatey.org/packages/sqljdbc
+choco install -y sqljdbc --version 10.2.0.0
 
 # install DBeaver.
 choco install -y dbeaver
