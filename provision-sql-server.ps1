@@ -1,4 +1,5 @@
 # install SQL Server.
+# see https://community.chocolatey.org/packages/sql-server-express
 choco install -y sql-server-express --version 2019.20200409 # SQL Server 2019 Express.
 
 # update $env:PSModulePath to include the modules installed by recently installed Chocolatey packages.
