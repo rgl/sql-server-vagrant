@@ -1,32 +1,23 @@
-// see https://docs.gradle.org/6.6/userguide/java_plugin.html
-// see https://docs.gradle.org/6.6/userguide/application_plugin.html
+// see https://docs.gradle.org/7.3/userguide/java_plugin.html
+// see https://docs.gradle.org/7.3/userguide/application_plugin.html
+// see https://docs.gradle.org/7.3/userguide/building_java_projects.html#sec:java_dependency_management_overview
 // see http://imperceptiblethoughts.com/shadow/
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 apply plugin: 'application'
 
 mainClassName = 'Example'
 version = '1.0.0'
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-jar {
-    manifest {
-        attributes(
-            'Implementation-Title': 'SQL Server Example',
-            'Implementation-Version': version,
-            'Main-Class': mainClassName
-        )
-    }
-}
+sourceCompatibility = 11
+targetCompatibility = 11
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile 'com.microsoft.sqlserver:mssql-jdbc:7.0.0.jre8'
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:10.2.0.jre11'
 }

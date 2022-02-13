@@ -1,6 +1,8 @@
 # install dependencies.
-choco install -y adoptopenjdk11 --version 11.0.8.11
-choco install -y gradle --version 6.6
+# see https://community.chocolatey.org/packages/temurin11
+# see https://community.chocolatey.org/packages/gradle
+choco install -y temurin11
+choco install -y gradle --version 7.3.3
 
 # update $env:PATH with the recently installed Chocolatey packages.
 Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
@@ -8,7 +10,7 @@ Update-SessionEnvironment
 
 # add our Example CA certificate to the default java trust store.
 @(
-    'C:\Program Files\AdoptOpenJDK\*\lib\security\cacerts'
+    'C:\Program Files\*\*\lib\security\cacerts'
 ) | ForEach-Object {Get-ChildItem $_} | ForEach-Object {
     $keyStore = $_
     $alias = 'Example CA'
