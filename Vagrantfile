@@ -1,3 +1,5 @@
+ip_address = '10.10.10.100'
+
 Vagrant.configure("2") do |config|
   config.vm.box = "windows-2019-amd64"
 
@@ -22,11 +24,11 @@ Vagrant.configure("2") do |config|
   end
   
   config.vm.hostname = 'mssql'
-  config.vm.network :private_network, ip: '10.10.10.100'
+  config.vm.network :private_network, ip: ip_address
   config.vm.provision "shell", path: "ps.ps1", args: "provision-chocolatey.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-base.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server.ps1"
-  config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-network-encryption.ps1"
+  config.vm.provision "shell", path: "ps.ps1", args: ["provision-sql-server-network-encryption.ps1", ip_address]
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-management-studio.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "provision-dbeaver.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlps.ps1"

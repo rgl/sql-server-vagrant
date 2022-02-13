@@ -1,6 +1,8 @@
 param(
     [Parameter(Mandatory=$true)]
-    [String]$script
+    [String]$script,
+    [Parameter(ValueFromRemainingArguments=$true)]
+    [String[]]$scriptArguments
 )
 
 Set-StrictMode -Version Latest
@@ -42,12 +44,8 @@ function choco {
     Start-Choco $Args
 }
 
-Set-Location c:\vagrant
-
+cd c:/vagrant
 $script = Resolve-Path $script
-
-Set-Location (Split-Path -Parent $script)
-
+cd (Split-Path $script -Parent)
 Write-Host "Running $script..."
-
-. ".\$(Split-Path -Leaf $script)"
+. $script @scriptArguments

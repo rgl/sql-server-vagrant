@@ -1,3 +1,7 @@
+param(
+    [string]$ip = $null
+)
+
 # define a function for easying the execution of bash scripts.
 $bashPath = 'C:\tools\msys64\usr\bin\bash.exe'
 function Bash($script) {
@@ -20,7 +24,9 @@ function Bash($script) {
 $ca_file_name = 'example-ca'
 $ca_common_name = 'Example CA'
 $domain = $env:COMPUTERNAME
-$ip = (Get-NetAdapter -Name 'Ethernet 2' | Get-NetIPAddress -AddressFamily IPv4).IPAddress
+if (!$ip) {
+    $ip = (Get-NetAdapter -Name 'Ethernet 2' | Get-NetIPAddress -AddressFamily IPv4).IPAddress
+}
 
 Bash @"
 mkdir -p /c/vagrant/tmp/ca
