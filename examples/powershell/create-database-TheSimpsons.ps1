@@ -16,7 +16,7 @@ $rolePermissions.Add([Microsoft.SqlServer.Management.Smo.DatabasePermission]::Ex
 $database.Grant($rolePermissions, $role.Name)
 
 Write-Host 'Creating databases users and assigning roles...'
-$users = @{
+@{
     'carol.doe' = @('db_datawriter', 'db_datareader', 'db_executor')
     'eve.doe'   = @('db_datareader', 'db_executor')
 }.GetEnumerator() | ForEach-Object {
@@ -89,6 +89,9 @@ try {
             $nameParameter.Value = $_.Name
             $genderParameter.Value = $_.Gender
             $rowsAffected = $command.ExecuteNonQuery()
+            if ($rowsAffected -ne 1) {
+                throw "failed to insert Character into the database"
+            }
         }
     }
     finally {
@@ -106,5 +109,5 @@ try {
         -Username eve.doe `
         -Password HeyH0Password `
         -Query "exec GetTotalCharactersByGender '$_'"
-    Write-Host "There are $($r.Total) $_ characters on the $databaseName database" 
+    Write-Host "There are $($r.Total) $_ characters on the $databaseName database"
 }
