@@ -1,7 +1,7 @@
-// see https://docs.gradle.org/7.3/userguide/java_plugin.html
-// see https://docs.gradle.org/7.3/userguide/application_plugin.html
-// see https://docs.gradle.org/7.3/userguide/building_java_projects.html#sec:java_dependency_management_overview
-// see http://imperceptiblethoughts.com/shadow/
+// see https://docs.gradle.org/7.5/userguide/java_plugin.html
+// see https://docs.gradle.org/7.5/userguide/application_plugin.html
+// see https://docs.gradle.org/7.5/userguide/building_java_projects.html#sec:java_dependency_management_overview
+// see https://github.com/johnrengelman/shadow
 
 plugins {
     id 'com.github.johnrengelman.shadow' version '7.1.2'
