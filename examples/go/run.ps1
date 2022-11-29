@@ -1,6 +1,6 @@
 # install go.
 # see https://community.chocolatey.org/packages/golang
-choco install -y golang --version 1.17.7
+choco install -y golang --version 1.19.3
 
 # setup the current process environment.
 $env:GOROOT = 'C:\Program Files\Go'
@@ -17,14 +17,16 @@ Write-Host '# go env'
 go env
 
 Write-Host '# build and run'
-$p = Start-Process go 'build','-v' `
-    -RedirectStandardOutput build-stdout.txt `
-    -RedirectStandardError build-stderr.txt `
-    -Wait `
-    -PassThru
-Write-Output (Get-Content build-stdout.txt,build-stderr.txt)
-Remove-Item build-stdout.txt,build-stderr.txt
-if ($p.ExitCode) {
-    throw "Failed to compile"
+Start-Example go {
+    $p = Start-Process go 'build','-v' `
+        -RedirectStandardOutput build-stdout.txt `
+        -RedirectStandardError build-stderr.txt `
+        -Wait `
+        -PassThru
+    Write-Output (Get-Content build-stdout.txt,build-stderr.txt)
+    Remove-Item build-stdout.txt,build-stderr.txt
+    if ($p.ExitCode) {
+        throw "Failed to compile"
+    }
+    .\go.exe
 }
-.\go.exe

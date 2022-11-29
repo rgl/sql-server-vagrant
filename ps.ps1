@@ -9,9 +9,9 @@ Set-StrictMode -Version Latest
 $ProgressPreference = 'SilentlyContinue'
 $ErrorActionPreference = 'Stop'
 trap {
-    Write-Output "ERROR: $_"
-    Write-Output (($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1')
-    Write-Output (($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1')
+    Write-Host "ERROR: $_"
+    ($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1' | Write-Host
+    ($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1' | Write-Host
     Exit 1
 }
 
@@ -44,8 +44,19 @@ function choco {
     Start-Choco $Args
 }
 
-cd c:/vagrant
+function Start-Example([string]$name, [scriptblock]$script) {
+    $path = "$env:TEMP\$name"
+    if (Test-Path $path) {
+        Remove-Item -Recurse -Force $path
+    }
+    Copy-Item -Recurse "c:\vagrant\examples\$name" $path
+    Push-Location $path
+    &$script
+    Pop-Location
+}
+
+Set-Location c:/vagrant
 $script = Resolve-Path $script
-cd (Split-Path $script -Parent)
+Set-Location (Split-Path $script -Parent)
 Write-Host "Running $script..."
 . $script @scriptArguments
