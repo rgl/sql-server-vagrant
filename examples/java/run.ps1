@@ -67,7 +67,7 @@ gradle shadowJar
 #    current directory, %PATH%, or inside one of the directories defined in the
 #    java.library.path java property (as done here; it points to the drivers
 #    installed by the sqljdbc chocolatey package).
-$javaLibraryPath = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*\enu\auth\x64').Path
+$javaLibraryPath = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*\auth\x64').Path
 java `
     "-Djava.library.path=$javaLibraryPath" `
     $(if ($useWindowsTrustStore) {'-Djavax.net.ssl.trustStoreType=Windows-ROOT'} else {$null}) `

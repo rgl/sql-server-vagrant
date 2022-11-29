@@ -1,12 +1,19 @@
 # install the SQL Server JDBC driver.
 # see https://community.chocolatey.org/packages/sqljdbc
-choco install -y sqljdbc --version 10.2.0.0
+# see https://github.com/Microsoft/mssql-jdbc
+$version = '11.2.0.0'
+choco install -y sqljdbc --version $version
+# remove invalid characters from the installation path.
+# see https://github.com/dgalbraith/chocolatey-packages/issues/448
+$brokenPath = Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*enu'
+$path = Join-Path (Split-Path -Parent $brokenPath) "sqljdbc_${version}_enu"
+Rename-Item $brokenPath $path
 
 # install DBeaver.
 choco install -y dbeaver
 
 # configure DBeaver.
-$sqljdbcHome = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*\enu').Path
+$sqljdbcHome = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*').Path
 $workspaceHome = "$env:USERPROFILE\.dbeaver4"
 $metadataHome = "$workspaceHome\.metadata"
 $pluginsHome = "$metadataHome\.plugins"
