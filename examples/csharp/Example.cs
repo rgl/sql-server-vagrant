@@ -1,5 +1,5 @@
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 class Example
 {
@@ -19,7 +19,7 @@ class Example
         Console.WriteLine(SqlExecuteScalar(tcpIpConnectionString, "select suser_name()"));
 
         Console.WriteLine("Is this SQL Server connection encrypted? (alice.doe; username/password credentials; Encrypted TCP/IP connection):");
-        Console.WriteLine(SqlExecuteScalar(tcpIpConnectionString + "; Encrypt=true", "select encrypt_option from sys.dm_exec_connections where session_id=@@SPID"));
+        Console.WriteLine(SqlExecuteScalar(tcpIpConnectionString + "; Encrypt=strict", "select encrypt_option from sys.dm_exec_connections where session_id=@@SPID"));
     }
 
     private static object SqlExecuteScalar(string connectionString, string sql)
