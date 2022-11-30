@@ -19,5 +19,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre11'
+    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v11.2.0
+    // see https://central.sonatype.dev/artifact/com.microsoft.sqlserver/mssql-jdbc/11.2.0.jre17
+    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre${targetCompatibility}"
 }
