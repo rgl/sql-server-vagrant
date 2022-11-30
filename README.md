@@ -1,4 +1,4 @@
-This is an example Vagrant environment for a SQL Server 2019 Express installation.
+This is an example Vagrant environment for a SQL Server 2022 Express installation.
 
 It will:
 
@@ -24,6 +24,20 @@ It will:
 Install the [Windows 2022 base box](https://github.com/rgl/windows-vagrant).
 
 Run `vagrant up --no-destroy-on-error` to launch the environment.
+
+Login into the Windows VM, open ConEmu/bash, and dump the SQL Server TLS details:
+
+```bash
+# see the TLS certificate validation result:
+echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -CAfile /c/vagrant/tmp/ca/example-ca-crt.pem
+# see the TLS certificate being returned by the server:
+echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -CAfile /c/vagrant/tmp/ca/example-ca-crt.pem | openssl x509 -noout -text -in -
+```
+
+
+# Reference
+
+* [TDS 8.0 and TLS 1.3 support](https://learn.microsoft.com/en-us/sql/relational-databases/security/networking/tds-8-and-tls-1-3?view=sql-server-ver16)
 
 
 # Example queries
