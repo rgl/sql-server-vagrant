@@ -107,7 +107,7 @@ New-Item -Force -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image 
 choco install -y 7zip.install
 
 # install git.
-choco install -y git --params '/GitOnlyOnPath /NoAutoCrlf'
+choco install -y git --params '/GitOnlyOnPath /NoAutoCrlf /SChannel'
 choco install -y gitextensions
 choco install -y meld
 
