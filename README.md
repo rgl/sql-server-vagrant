@@ -15,7 +15,7 @@ It will:
   * Add users to database roles
     * `carol.doe` in the `db_datawriter`, `db_datareader` and `db_executor` roles.
     * `eve.doe` in the `db_datareader` and `db_executor` roles.
-* Install the [DBeaver](http://dbeaver.jkiss.org/) Universal SQL Client.
+* Install the [DBeaver](https://dbeaver.io/) Universal SQL Client.
 * Run PowerShell, Python, Java, C# and Go [examples](examples/).
 
 

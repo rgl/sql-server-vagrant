@@ -1,0 +1,37 @@
+{
+	"folders": {},
+	"connections": {
+		"microsoft-local": {
+			"provider": "sqlserver",
+			"driver": "microsoft",
+			"name": "MS SQL Server - local",
+			"save-password": true,
+			"configuration": {
+				"host": "MSSQL",
+				"port": "1433",
+				"database": "master",
+				"url": "jdbc:sqlserver://;serverName\u003dMSSQL;databaseName\u003dmaster",
+				"type": "dev",
+				"properties": {
+					"applicationName": "DBeaver"
+				},
+				"provider-properties": {
+					"@dbeaver-show-all-schemas@": "false"
+				},
+				"auth-model": "sqlserver_windows",
+				"handlers": {}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false,
+			"auto-close-transactions": false
+		}
+	}
+}
