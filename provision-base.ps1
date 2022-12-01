@@ -85,23 +85,8 @@ New-Item -Path HKLM:Software\Policies\Microsoft\Windows\Personalization -Force `
     | New-ItemProperty -Name PersonalColors_Accent -Value '#007acc' `
     | Out-Null
 
-# replace notepad with notepad++.
-choco install -y notepadplusplus.install
-$archiveUrl = 'https://github.com/rgl/ApplicationReplacer/releases/download/v0.0.1/ApplicationReplacer.zip'
-$archiveHash = 'aeba158e5c7a6ecaaa95c8275b5bb4d6e032e016c6419adebb94f4e939b9a918'
-$archiveName = Split-Path $archiveUrl -Leaf
-$archivePath = "$env:TEMP\$archiveName"
-Invoke-WebRequest $archiveUrl -UseBasicParsing -OutFile $archivePath
-$archiveActualHash = (Get-FileHash $archivePath -Algorithm SHA256).Hash
-if ($archiveHash -ne $archiveActualHash) {
-    throw "$archiveName downloaded from $archiveUrl to $archivePath has $archiveActualHash hash witch does not match the expected $archiveHash"
-}
-Expand-Archive $archivePath -DestinationPath 'C:\Program Files\ApplicationReplacer'
-Remove-Item $archivePath
-New-Item -Force -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Image File Execution Options\notepad.exe' `
-    | Set-ItemProperty `
-        -Name Debugger `
-        -Value '"C:\Program Files\ApplicationReplacer\ApplicationReplacer.exe" -- "C:\Program Files\Notepad++\notepad++.exe"'
+# replace notepad with notepad3.
+choco install -y notepad3
 
 # install 7zip.
 choco install -y 7zip.install
