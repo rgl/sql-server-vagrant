@@ -11,7 +11,7 @@ Rename-Item $brokenPath $path
 
 # install DBeaver.
 # see https://community.chocolatey.org/packages/dbeaver
-choco install -y dbeaver --version 22.2.5
+choco install -y dbeaver --version 22.3.0
 
 # configure DBeaver.
 $sqljdbcHome = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*').Path
