@@ -1,7 +1,8 @@
 # install the odbc driver.
 # NB when you change this version, you might also need to update the connection
 #    string in main.py (to a name returned by the Get-OdbcDriver cmdlet).
-choco install -y sqlserver-odbcdriver --version 18.1.2.1
+# see https://community.chocolatey.org/packages/sqlserver-odbcdriver
+choco install -y sqlserver-odbcdriver --version 18.2.1.1
 
 # list the installed odbc drivers.
 Get-OdbcDriver -Platform '64-bit' `
@@ -10,7 +11,7 @@ Get-OdbcDriver -Platform '64-bit' `
 
 # install python.
 # see https://community.chocolatey.org/packages/python
-choco install -y python --version 3.11.0
+choco install -y python --version 3.11.4
 
 # update $env:PATH with the recently installed Chocolatey packages.
 Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
