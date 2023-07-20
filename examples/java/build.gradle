@@ -1,12 +1,13 @@
-// see https://docs.gradle.org/7.5/userguide/java_plugin.html
-// see https://docs.gradle.org/7.5/userguide/application_plugin.html
-// see https://docs.gradle.org/7.5/userguide/building_java_projects.html#sec:java_dependency_management_overview
+// see https://docs.gradle.org/8.1/userguide/java_plugin.html
+// see https://docs.gradle.org/8.1/userguide/application_plugin.html
+// see https://docs.gradle.org/8.1/userguide/building_java_projects.html#sec:java_dependency_management_overview
 // see https://github.com/johnrengelman/shadow
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '7.1.2'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
+apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'application'
 
 mainClassName = 'Example'
@@ -19,7 +20,7 @@ repositories {
 }
 
 dependencies {
-    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v11.2.0
-    // see https://central.sonatype.dev/artifact/com.microsoft.sqlserver/mssql-jdbc/11.2.0.jre17
-    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.0.jre${targetCompatibility}"
+    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v11.2.3
+    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/11.2.3.jre17
+    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.3.jre${targetCompatibility}"
 }

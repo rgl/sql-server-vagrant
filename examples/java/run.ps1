@@ -5,7 +5,22 @@ $useWindowsTrustStore = $true
 # see https://community.chocolatey.org/packages/temurin17
 # see https://community.chocolatey.org/packages/gradle
 choco install -y temurin17
-choco install -y gradle --version 7.5.1
+choco install -y gradle --version 8.1.1
+
+# install the SQL Server JDBC Auth driver.
+# see https://github.com/Microsoft/mssql-jdbc
+$archiveVersion = '11.2.3'
+$archiveUrl = "https://github.com/microsoft/mssql-jdbc/releases/download/v$archiveVersion/mssql-jdbc_auth.zip"
+$archivePath = "$env:TEMP\mssql-jdbc_auth-$archiveVersion.zip"
+if (Test-Path $archivePath) {
+    Remove-Item $archivePath | Out-Null
+}
+(New-Object Net.WebClient).DownloadFile($archiveUrl, $archivePath)
+$jdbcAuthPath = 'C:\Program Files\mssql-jdbc_auth'
+if (Test-Path $jdbcAuthPath) {
+    Remove-Item -Recurse -Force $jdbcAuthPath | Out-Null
+}
+Expand-Archive $archivePath $jdbcAuthPath
 
 # update $env:PATH with the recently installed Chocolatey packages.
 Import-Module C:\ProgramData\chocolatey\helpers\chocolateyInstaller.psm1
@@ -59,15 +74,15 @@ if (!$useWindowsTrustStore) {
 
 # build into a fat jar.
 # NB gradle build would also work, but having a fat jar is nicier for distribution.
-gradle shadowJar
+gradle --no-daemon shadowJar
 
 # run the example.
 # NB gradle run would also work, but this shows how a user would use the fat jar.
 # NB for using the integrated authentication we must have sqljdbc_auth.dll in the
 #    current directory, %PATH%, or inside one of the directories defined in the
 #    java.library.path java property (as done here; it points to the drivers
-#    installed by the sqljdbc chocolatey package).
-$javaLibraryPath = (Resolve-Path 'C:\Program Files\Microsoft JDBC DRIVER*\sqljdbc*\auth\x64').Path
+#    installed from github above).
+$javaLibraryPath = "$jdbcAuthPath\x64"
 java `
     "-Djava.library.path=$javaLibraryPath" `
     $(if ($useWindowsTrustStore) {'-Djavax.net.ssl.trustStoreType=Windows-ROOT'} else {$null}) `
