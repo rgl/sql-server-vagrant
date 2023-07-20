@@ -5,10 +5,14 @@ choco install -y sql-server-express --version 2022.16.0.1000 # SQL Server 2022 E
 # update $env:PSModulePath to include the modules installed by recently installed Chocolatey packages.
 $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
 
+# install the Sql Server PowerShell Module.
+# see https://www.powershellgallery.com/packages/Sqlserver
+# see https://learn.microsoft.com/en-us/powershell/module/sqlserver/?view=sqlserver-ps
+# see https://learn.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver16
+Install-Module SqlServer -AllowClobber -RequiredVersion 22.1.1
+
 # load the SQL Server PowerShell provider and related Smo .NET assemblies.
-Push-Location                               # save the current location...
-Import-Module Sqlps -DisableNameChecking    # ... because importing the module changes the current directory to "SQLSERVER:"
-Pop-Location                                # ... and we do not want that.
+Import-Module SqlServer
 
 # allow remote TCP/IP connections.
 # see http://stefanteixeira.com/2015/09/01/automating-sqlserver-config-with-powershell-wmi/

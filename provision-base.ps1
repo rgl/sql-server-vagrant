@@ -85,6 +85,10 @@ New-Item -Path HKLM:Software\Policies\Microsoft\Windows\Personalization -Force `
     | New-ItemProperty -Name PersonalColors_Accent -Value '#007acc' `
     | Out-Null
 
+# add support for installing powershell modules from powershellgallery.
+Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
+Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
+
 # replace notepad with notepad3.
 choco install -y notepad3
 
