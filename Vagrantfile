@@ -30,7 +30,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: ["provision-sql-server-network-encryption.ps1", ip_address]
   config.vm.provision "shell", path: "ps.ps1", args: "provision-sql-server-management-studio.ps1"
-  config.vm.provision "shell", path: "ps.ps1", args: "provision-dbeaver.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlps.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/sqlclient.ps1"
   config.vm.provision "shell", path: "ps.ps1", args: "examples/powershell/create-database-TheSimpsons.ps1"

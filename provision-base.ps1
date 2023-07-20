@@ -297,15 +297,6 @@ Install-ChocolateyShortcut `
     -Arguments '-run {MSYS2} -icon C:\tools\msys64\msys2.ico' `
     -IconLocation C:\tools\msys64\msys2.ico `
     -WorkingDirectory '%USERPROFILE%'
-# add DBeaver shortcut to the Desktop and Start Menu.
-Install-ChocolateyShortcut `
-    -ShortcutFilePath "$env:USERPROFILE\Desktop\DBeaver.lnk" `
-    -TargetPath 'C:\Program Files\DBeaver\dbeaver.exe' `
-    -WorkingDirectory '%USERPROFILE%'
-Install-ChocolateyShortcut `
-    -ShortcutFilePath "C:\Users\All Users\Microsoft\Windows\Start Menu\Programs\DBeaver.lnk" `
-    -TargetPath 'C:\Program Files\DBeaver\dbeaver.exe' `
-    -WorkingDirectory '%USERPROFILE%'
 # add SQL Server Management Studio shortcut to the Desktop.
 Install-ChocolateyShortcut `
     -ShortcutFilePath "$env:USERPROFILE\Desktop\SQL Server Management Studio.lnk" `
