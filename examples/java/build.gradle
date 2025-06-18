@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v11.2.3
-    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/11.2.3.jre17
-    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.3.jre${java.targetCompatibility}"
+    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v12.2.0
+    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.2.0.jre11
+    implementation "com.microsoft.sqlserver:mssql-jdbc:12.2.0.jre11"
 }
