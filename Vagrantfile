@@ -11,17 +11,6 @@ Vagrant.configure("2") do |config|
     lv.keymap = "pt"
     config.vm.synced_folder ".", "/vagrant", type: "smb", smb_username: ENV["USER"], smb_password: ENV["VAGRANT_SMB_PASSWORD"]
   end
-
-  config.vm.provider "virtualbox" do |vb, config|
-    vb.linked_clone = true
-    vb.memory = 4*1024
-    vb.customize ["modifyvm", :id, "--vram", 256]
-    vb.customize ["modifyvm", :id, "--accelerate3d", "on"]
-    vb.customize ["modifyvm", :id, "--accelerate2dvideo", "on"]
-    vb.customize ["modifyvm", :id, "--clipboard", "bidirectional"]
-    vb.customize ["modifyvm", :id, "--draganddrop", "bidirectional"]
-    config.vm.synced_folder ".", "/vagrant", type: "smb", smb_username: ENV["USER"], smb_password: ENV["VAGRANT_SMB_PASSWORD"]
-  end
   
   config.vm.hostname = 'mssql'
   config.vm.network :private_network, ip: ip_address
