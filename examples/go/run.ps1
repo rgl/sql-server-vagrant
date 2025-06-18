@@ -29,4 +29,7 @@ Start-Example go {
         throw "Failed to compile"
     }
     .\go.exe
+    if ($LASTEXITCODE) {
+        throw "failed with exit code $LASTEXITCODE"
+    }
 }

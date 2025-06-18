@@ -19,6 +19,12 @@ Update-SessionEnvironment
 
 # install the example dependencies.
 python -m pip -q install -r requirements.txt
+if ($LASTEXITCODE) {
+    throw "failed with exit code $LASTEXITCODE"
+}
 
 # run the example.
 python main.py
+if ($LASTEXITCODE) {
+    throw "failed with exit code $LASTEXITCODE"
+}

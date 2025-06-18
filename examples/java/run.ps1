@@ -75,6 +75,9 @@ if (!$useWindowsTrustStore) {
 # build into a fat jar.
 # NB gradle build would also work, but having a fat jar is nicier for distribution.
 gradle --no-daemon shadowJar
+if ($LASTEXITCODE) {
+    throw "failed with exit code $LASTEXITCODE"
+}
 
 # run the example.
 # NB gradle run would also work, but this shows how a user would use the fat jar.
@@ -87,3 +90,6 @@ java `
     "-Djava.library.path=$javaLibraryPath" `
     $(if ($useWindowsTrustStore) {'-Djavax.net.ssl.trustStoreType=Windows-ROOT'} else {$null}) `
     -jar build/libs/example-1.0.0-all.jar
+if ($LASTEXITCODE) {
+    throw "failed with exit code $LASTEXITCODE"
+}
