@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/denisenkom/go-mssqldb"
+	_ "github.com/microsoft/go-mssqldb"
 )
 
 func sqlExecuteScalar(connectionString string, sqlStatement string) string {
