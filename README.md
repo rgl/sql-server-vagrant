@@ -30,7 +30,7 @@ Login into the Windows VM, open ConEmu/bash, and dump the SQL Server TLS details
 # see the TLS certificate validation result:
 echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -CAfile /c/vagrant/tmp/ca/example-ca-crt.pem
 # see the TLS certificate being returned by the server:
-echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -CAfile /c/vagrant/tmp/ca/example-ca-crt.pem | openssl x509 -noout -text -in -
+echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -CAfile /c/vagrant/tmp/ca/example-ca-crt.pem | openssl x509 -noout -text
 ```
 
 
