@@ -1,19 +1,23 @@
-// see https://docs.gradle.org/8.1/userguide/java_plugin.html
-// see https://docs.gradle.org/8.1/userguide/application_plugin.html
-// see https://docs.gradle.org/8.1/userguide/building_java_projects.html#sec:java_dependency_management_overview
-// see https://github.com/johnrengelman/shadow
+// see https://docs.gradle.org/8.14.2/userguide/java_plugin.html
+// see https://docs.gradle.org/8.14.2/userguide/application_plugin.html
+// see https://gradleup.com/shadow/
+// see https://github.com/GradleUp/shadow
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'application'
+    id 'com.gradleup.shadow' version '8.3.6'
 }
 
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'application'
-
-mainClassName = 'Example'
 version = '1.0.0'
-sourceCompatibility = 17
-targetCompatibility = 17
+
+application {
+    mainClass = 'Example'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
 
 repositories {
     mavenCentral()
@@ -22,5 +26,5 @@ repositories {
 dependencies {
     // see https://github.com/microsoft/mssql-jdbc/releases/tag/v11.2.3
     // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/11.2.3.jre17
-    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.3.jre${targetCompatibility}"
+    implementation "com.microsoft.sqlserver:mssql-jdbc:11.2.3.jre${java.targetCompatibility}"
 }

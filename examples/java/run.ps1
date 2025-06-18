@@ -5,7 +5,7 @@ $useWindowsTrustStore = $true
 # see https://community.chocolatey.org/packages/temurin17
 # see https://community.chocolatey.org/packages/gradle
 choco install -y temurin17
-choco install -y gradle --version 8.1.1
+choco install -y gradle --version 8.14.2
 
 # install the SQL Server JDBC Auth driver.
 # see https://github.com/Microsoft/mssql-jdbc
@@ -73,8 +73,12 @@ if (!$useWindowsTrustStore) {
 }
 
 # build into a fat jar.
-# NB gradle build would also work, but having a fat jar is nicier for distribution.
-gradle --no-daemon shadowJar
+# NB gradle build would also work, but having a fat jar is nicer for distribution.
+gradle `
+    --no-daemon `
+    --no-watch-fs `
+    --warning-mode all `
+    shadowJar
 if ($LASTEXITCODE) {
     throw "failed with exit code $LASTEXITCODE"
 }
