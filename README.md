@@ -20,7 +20,7 @@ It will:
 
 # Usage
 
-Install the [Windows 2022 base box](https://github.com/rgl/windows-vagrant).
+Install the [Windows 2022 UEFI base box](https://github.com/rgl/windows-vagrant).
 
 Run `vagrant up --no-destroy-on-error` to launch the environment.
 
