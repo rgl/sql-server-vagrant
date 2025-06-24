@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v12.10.0
-    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.10.0.jre11
-    implementation "com.microsoft.sqlserver:mssql-jdbc:12.10.0.jre11"
+    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v12.10.1
+    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/12.10.1.jre11
+    implementation "com.microsoft.sqlserver:mssql-jdbc:12.10.1.jre11"
 }
