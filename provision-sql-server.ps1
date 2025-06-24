@@ -1,8 +1,142 @@
-# install SQL Server.
-# see https://community.chocolatey.org/packages/sql-server-express
-choco install -y sql-server-express --version 2022.16.0.1000 # SQL Server 2022 Express.
+. ./provision-sql-server-common.ps1
 
-# update $env:PSModulePath to include the modules installed by recently installed Chocolatey packages.
+function Get-StringSha256Hash {
+    param (
+        [string]$InputString
+    )
+    $stringBytes = [System.Text.Encoding]::UTF8.GetBytes($InputString)
+    $sha256 = [System.Security.Cryptography.SHA256]::Create()
+    $hashBytes = $sha256.ComputeHash($stringBytes)
+    $hashString = [System.BitConverter]::ToString($hashBytes) -replace '-', ''
+    return $hashString.ToLower()
+}
+
+# install sql server.
+# see https://www.microsoft.com/en-us/sql-server/sql-server-downloads
+# see https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-ver16
+# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Express/
+# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Developer/
+if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
+    $archiveUrl = 'https://download.microsoft.com/download/5/1/4/5145fe04-4d30-4b85-b0d1-39533663a2f1/SQL2022-SSEI-Expr.exe'
+    $mediaPath = "C:\vagrant\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)"
+    $setupPath = "c:\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
+
+    # download setup.
+    if (!(Test-Path $setupPath)) {
+        if (!(Test-Path $mediaPath)) {
+            mkdir $mediaPath | Out-Null
+        }
+        $archiveName = Split-Path -Leaf $archiveUrl
+        $archivePath = "$mediaPath\$archiveName"
+        if (!(Test-Path $archivePath)) {
+            Write-Host "Downloading $archiveName SQL Server $env:SQL_SERVER_EDITION Bootstrap Installer..."
+            (New-Object Net.WebClient).DownloadFile($archiveUrl, $archivePath)
+        }
+        $sfxPath = "$mediaPath\SQLEXPR_x64_ENU.exe"
+        if (!(Test-Path $sfxPath)) {
+            Write-Host "Downloading SQL Server $env:SQL_SERVER_EDITION setup..."
+            &$archivePath `
+                /ENU `
+                /LANGUAGE=en-US `
+                /ACTION=Download `
+                /MEDIAPATH="$mediaPath" `
+                /MEDIATYPE=Core `
+                /QUIET `
+                /VERBOSE `
+                | Out-String -Stream
+            if ($LASTEXITCODE) {
+                throw "failed with exit code $LASTEXITCODE"
+            }
+        }
+        Write-Host "Extracting SQL Server $env:SQL_SERVER_EDITION setup..."
+        &$sfxPath `
+            /Q `
+            /X:"$(Split-Path -Parent $setupPath)" `
+            /VERBOSE `
+            | Out-String -Stream
+        if ($LASTEXITCODE) {
+            throw "failed with exit code $LASTEXITCODE"
+        }
+    }
+
+    # install.
+    # NB this cannot be executed from a network share (e.g. c:\vagrant).
+    Write-Host "Installing SQL Server $env:SQL_SERVER_EDITION..."
+    &$setupPath `
+        /IACCEPTSQLSERVERLICENSETERMS `
+        /QUIET `
+        /ACTION=Install `
+        /INSTANCEID=$env:SQL_SERVER_INSTANCE_NAME `
+        /INSTANCENAME=$env:SQL_SERVER_INSTANCE_NAME `
+        /UPDATEENABLED=False `
+        | Out-String -Stream
+    if ($LASTEXITCODE) {
+        throw "failed with exit code $LASTEXITCODE"
+    }
+} elseif ($env:SQL_SERVER_EDITION -eq 'DEVELOPER') {
+    $archiveUrl = 'https://download.microsoft.com/download/c/c/9/cc9c6797-383c-4b24-8920-dc057c1de9d3/SQL2022-SSEI-Dev.exe'
+    $mediaPath = "C:\vagrant\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)"
+    $setupPath = "c:\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
+
+    # download setup.
+    if (!(Test-Path $setupPath)) {
+        if (!(Test-Path $mediaPath)) {
+            mkdir $mediaPath | Out-Null
+        }
+        $archiveName = Split-Path -Leaf $archiveUrl
+        $archivePath = "$mediaPath\$archiveName"
+        if (!(Test-Path $archivePath)) {
+            Write-Host "Downloading $archiveName SQL Server $env:SQL_SERVER_EDITION Bootstrap Installer..."
+            (New-Object Net.WebClient).DownloadFile($archiveUrl, $archivePath)
+        }
+        $sfxPath = "$mediaPath\SQLServer2022-DEV-x64-ENU.exe"
+        if (!(Test-Path $sfxPath)) {
+            Write-Host "Downloading SQL Server $env:SQL_SERVER_EDITION setup..."
+            &$archivePath `
+                /ENU `
+                /LANGUAGE=en-US `
+                /ACTION=Download `
+                /MEDIAPATH="$mediaPath" `
+                /MEDIATYPE=CAB `
+                /QUIET `
+                /VERBOSE `
+                | Out-String -Stream
+            if ($LASTEXITCODE) {
+                throw "failed with exit code $LASTEXITCODE"
+            }
+        }
+        Write-Host "Extracting SQL Server $env:SQL_SERVER_EDITION setup..."
+        &$sfxPath `
+            /Q `
+            /X:"$(Split-Path -Parent $setupPath)" `
+            /VERBOSE `
+            | Out-String -Stream
+        if ($LASTEXITCODE) {
+            throw "failed with exit code $LASTEXITCODE"
+        }
+    }
+
+    # install.
+    # NB this cannot be executed from a network share (e.g. c:\vagrant).
+    Write-Host "Installing SQL Server $env:SQL_SERVER_EDITION..."
+    &$setupPath `
+        /IACCEPTSQLSERVERLICENSETERMS `
+        /QUIET `
+        /ACTION=Install `
+        /FEATURES=SQL `
+        /INSTANCEID=$env:SQL_SERVER_INSTANCE_NAME `
+        /INSTANCENAME=$env:SQL_SERVER_INSTANCE_NAME `
+        /UPDATEENABLED=False `
+        /SQLSYSADMINACCOUNTS="$env:USERDOMAIN\$env:USERNAME" `
+        | Out-String -Stream
+    if ($LASTEXITCODE) {
+        throw "failed with exit code $LASTEXITCODE"
+    }
+} else {
+    throw "unsupported sql server edition: $env:SQL_SERVER_EDITION"
+}
+
+# update $env:PSModulePath to include the modules installed by recently installed package.
 $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
 
 # install the Sql Server PowerShell Module.
@@ -18,7 +152,7 @@ Import-Module SqlServer
 # see http://stefanteixeira.com/2015/09/01/automating-sqlserver-config-with-powershell-wmi/
 Write-Host 'Enabling remote TCP/IP access (port 1433)...'
 $wmi = New-Object 'Microsoft.SqlServer.Management.Smo.Wmi.ManagedComputer'
-$tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$env:COMPUTERNAME']/ServerInstance[@Name='SQLEXPRESS']/ServerProtocol[@Name='Tcp']")
+$tcp = $wmi.GetSmoObject("ManagedComputer[@Name='$env:COMPUTERNAME']/ServerInstance[@Name='$env:SQL_SERVER_INSTANCE_NAME']/ServerProtocol[@Name='Tcp']")
 $tcp.IsEnabled = $true
 $tcp.IPAddresses | Where-Object { $_.Name -eq 'IPAll' } | ForEach-Object {
     foreach ($property in $_.IPAddressProperties) {
@@ -30,11 +164,10 @@ $tcp.IPAddresses | Where-Object { $_.Name -eq 'IPAll' } | ForEach-Object {
     }
 }
 $tcp.Alter()
-Restart-Service 'MSSQL$SQLEXPRESS' -Force
+Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force
 
 Write-Host 'Enabling Mixed Mode Authentication...'
-$instanceName = '.\SQLEXPRESS'
-$server = New-Object Microsoft.SqlServer.Management.Smo.Server $instanceName
+$server = New-Object Microsoft.SqlServer.Management.Smo.Server $env:SQL_SERVER_INSTANCE
 $server.Settings.LoginMode = 'Mixed'
 $server.Alter()
 
@@ -52,7 +185,7 @@ $testUsers = @(
 # create SQL Server accounts for the women.
 Write-Host 'Creating SQL Server Users...'
 $testUsers | ForEach-Object {$i=0} { if (![bool]($i++ % 2)) {$_}} | ForEach-Object {
-    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $instanceName,$_
+    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $env:SQL_SERVER_INSTANCE,$_
     $login.LoginType = 'SqlLogin'
     $login.PasswordPolicyEnforced = $false
     $login.PasswordExpirationEnabled = $false
@@ -79,7 +212,7 @@ $testUsers | ForEach-Object {$i=0} { if ([bool]($i++ % 2)) {$_}} | ForEach-Objec
     # add the user to the Users group.
     ([ADSI]'WinNT://./Users,Group').Add("WinNT://$_,User")
     # add the Windows user to SQL Server.
-    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $instanceName,"$env:COMPUTERNAME\$_"
+    $login = New-Object Microsoft.SqlServer.Management.Smo.Login $env:SQL_SERVER_INSTANCE,"$env:COMPUTERNAME\$_"
     $login.LoginType = 'WindowsUser'
     $login.PasswordPolicyEnforced = $false
     $login.PasswordExpirationEnabled = $false
@@ -87,7 +220,7 @@ $testUsers | ForEach-Object {$i=0} { if ([bool]($i++ % 2)) {$_}} | ForEach-Objec
 }
 
 # restart it to be able to use the recently added users.
-Restart-Service 'MSSQL$SQLEXPRESS' -Force
+Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force
 
 Write-Host 'Creating the firewall rule to allow inbound TCP/IP access to the SQL Server port 1443...'
 New-NetFirewallRule `

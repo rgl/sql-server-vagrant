@@ -1,10 +1,9 @@
 . .\common.ps1
 
-$serverInstance = '.\SQLEXPRESS'
 $databaseName = 'TheSimpsons'
 
 Write-Host "Creating the $databaseName database..."
-$database = New-Object Microsoft.SqlServer.Management.Smo.Database $serverInstance,$databaseName
+$database = New-Object Microsoft.SqlServer.Management.Smo.Database $env:SQL_SERVER_INSTANCE,$databaseName
 $database.Create()
 $database.Refresh()
 
@@ -37,7 +36,7 @@ Write-Host 'Creating databases users and assigning roles...'
 }
 
 Write-Host "Creating the $databaseName schema..."
-$r = Invoke-Sqlcmd -ServerInstance $serverInstance -Database $databaseName -Query @'
+$r = Invoke-Sqlcmd -ServerInstance $env:SQL_SERVER_INSTANCE -Database $databaseName -Query @'
 create table Character(
     Id nvarchar(255) not null,
     Name nvarchar(80) not null,
@@ -74,7 +73,7 @@ $theSimpsons = $r.results.bindings | ForEach-Object {
         Gender = $_.gender.value}}
 
 Write-Host "Populating the $databaseName database..."
-$connection = New-Object System.Data.SqlClient.SqlConnection "Server=$serverInstance; Database=$databaseName; Integrated Security=true"
+$connection = New-Object System.Data.SqlClient.SqlConnection "Server=$env:SQL_SERVER_INSTANCE; Database=$databaseName; Integrated Security=true"
 $connection.Open()
 try {
     $command = $connection.CreateCommand()
@@ -104,7 +103,7 @@ try {
 # execute the GetTotalCharactersByGender stored procedure.
 'male','female' | ForEach-Object {
     $r = Invoke-Sqlcmd `
-        -ServerInstance $serverInstance `
+        -ServerInstance $env:SQL_SERVER_INSTANCE `
         -Database $databaseName `
         -Username eve.doe `
         -Password HeyH0Password `

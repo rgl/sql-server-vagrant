@@ -2,7 +2,9 @@ param(
     [string]$ip = $null
 )
 
-# define a function for easying the execution of bash scripts.
+. ./provision-sql-server-common.ps1
+
+# define a function for easing the execution of bash scripts.
 $bashPath = 'C:\tools\msys64\usr\bin\bash.exe'
 function Bash($script) {
     $eap = $ErrorActionPreference
@@ -117,7 +119,7 @@ Import-PfxCertificate `
 
 Write-Host "Configuring SQL Server to allow encrypted connections at $domain..."
 $certificate = Get-ChildItem -DnsName $domain Cert:\LocalMachine\My
-$superSocketNetLibPath = Resolve-Path 'HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL*.SQLEXPRESS\MSSQLServer\SuperSocketNetLib'
+$superSocketNetLibPath = Resolve-Path "HKLM:\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL*.$env:SQL_SERVER_INSTANCE_NAME\MSSQLServer\SuperSocketNetLib"
 Set-ItemProperty `
     -Path $superSocketNetLibPath `
     -Name Certificate `
@@ -165,5 +167,5 @@ function Grant-PrivateKeyReadPermissions($certificate, $accountName) {
     $acl.AddAccessRule((New-Object System.Security.AccessControl.FileSystemAccessRule @($accountName, 'Read', 'Allow')))
     Set-Acl $privateKeyPath $acl
 }
-Grant-PrivateKeyReadPermissions $certificate 'MSSQL$SQLEXPRESS'
-Restart-Service 'MSSQL$SQLEXPRESS' -Force
+Grant-PrivateKeyReadPermissions $certificate $env:SQL_SERVER_SERVICE_NAME
+Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force

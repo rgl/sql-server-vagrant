@@ -1,4 +1,4 @@
-This is an example Vagrant environment for a SQL Server 2022 Express installation.
+This is an example Vagrant environment for a SQL Server 2022 Express or Developer installation.
 
 It will:
 
@@ -22,7 +22,13 @@ It will:
 
 Install the [Windows 2022 UEFI base box](https://github.com/rgl/windows-vagrant).
 
-Run `vagrant up --no-destroy-on-error` to launch the environment.
+Choose the SQL Server edition by editing the [`$env:SQL_SERVER_EDITION` variable](provision-sql-server-common.ps1) (defaults to SQL Server Express).
+
+Launch the environment with:
+
+```bash
+vagrant up --no-destroy-on-error
+```
 
 Login into the Windows VM, open ConEmu/bash, and dump the SQL Server TLS details:
 
