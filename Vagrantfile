@@ -11,7 +11,7 @@ Vagrant.configure("2") do |config|
     lv.keymap = "pt"
     config.vm.synced_folder ".", "/vagrant", type: "smb", smb_username: ENV["USER"], smb_password: ENV["VAGRANT_SMB_PASSWORD"]
   end
-  
+
   config.vm.hostname = 'mssql'
   config.vm.network :private_network, ip: ip_address
   config.vm.provision "shell", path: "ps.ps1", args: "provision-chocolatey.ps1"
