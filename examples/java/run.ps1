@@ -5,7 +5,7 @@ $useWindowsTrustStore = $true
 # see https://community.chocolatey.org/packages/temurin17
 # see https://community.chocolatey.org/packages/gradle
 choco install -y temurin17
-choco install -y gradle --version 8.14.2
+choco install -y gradle --version 9.0.0
 
 # install the SQL Server JDBC Auth driver.
 # see https://github.com/Microsoft/mssql-jdbc
