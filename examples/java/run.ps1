@@ -89,6 +89,8 @@ if ($LASTEXITCODE) {
 #    current directory, %PATH%, or inside one of the directories defined in the
 #    java.library.path java property (as done here; it points to the drivers
 #    installed from github above).
+# NB the Windows-ROOT trustStoreType is provided by the SunMSCAPI java security
+#    provider.
 $javaLibraryPath = "$jdbcAuthPath\x64"
 java `
     "-Djava.library.path=$javaLibraryPath" `
