@@ -143,6 +143,7 @@ $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'Us
 # see https://www.powershellgallery.com/packages/Sqlserver
 # see https://learn.microsoft.com/en-us/powershell/module/sqlserver/?view=sqlserver-ps
 # see https://learn.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver16
+Write-Host "Installing the SqlServer PowerShell module..."
 Install-Module SqlServer -AllowClobber -RequiredVersion 22.4.5.1
 
 # load the SQL Server PowerShell provider and related Smo .NET assemblies.
