@@ -5,7 +5,7 @@ $encryptOptionQuery = 'select encrypt_option from sys.dm_exec_connections where 
 Write-Host 'Asserting that the SQL Server connection is encrypted (Invoke-Sqlcmd; alice.doe; username/password credentials; Encrypted TCP/IP connection)...'
 $encryptOption = (Invoke-Sqlcmd `
     -ServerInstance "$env:COMPUTERNAME,1433" `
-    -EncryptConnection `
+    -Encrypt Strict `
     -Username alice.doe `
     -Password HeyH0Password `
     -Query $encryptOptionQuery).encrypt_option
