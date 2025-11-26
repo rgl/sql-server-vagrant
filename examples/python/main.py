@@ -1,14 +1,15 @@
 import os
-import pyodbc
+import mssql_python
 
-# see http://mkleehammer.github.io/pyodbc/
+# see https://github.com/microsoft/mssql-python
+# see https://github.com/microsoft/mssql-python/wiki/Connection-to-SQL-Database
 def sql_execute_scalar(connection_string, sql):
-    with pyodbc.connect(connection_string) as connection:
+    with mssql_python.connect(connection_string) as connection:
         with connection.cursor() as cursor:
             cursor.execute(sql)
             return cursor.fetchval()
 
-connection_string = 'DRIVER={ODBC Driver 18 for SQL Server};SERVER=%s;PORT=1433;DATABASE=master;UID=alice.doe;PWD=HeyH0Password' % os.environ['COMPUTERNAME']
+connection_string = 'Server=%s,1433;Database=master;UID=alice.doe;PWD=HeyH0Password' % os.environ['COMPUTERNAME']
 
 print('SQL Server Version:')
 print(sql_execute_scalar(connection_string, 'select @@version'))
