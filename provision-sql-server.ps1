@@ -13,13 +13,13 @@ function Get-StringSha256Hash {
 
 # install sql server.
 # see https://www.microsoft.com/en-us/sql-server/sql-server-downloads
-# see https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-ver16
+# see https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-ver17
 # see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Express/
 # see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Developer/
 if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
-    $archiveUrl = 'https://download.microsoft.com/download/5/1/4/5145fe04-4d30-4b85-b0d1-39533663a2f1/SQL2022-SSEI-Expr.exe'
-    $mediaPath = "C:\vagrant\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)"
-    $setupPath = "c:\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
+    $archiveUrl = 'https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe'
+    $mediaPath = "C:\vagrant\tmp\EXPRESS-$(Get-StringSha256Hash $archiveUrl)"
+    $setupPath = "c:\tmp\EXPRESS-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
 
     # download setup.
     if (!(Test-Path $setupPath)) {
@@ -32,7 +32,7 @@ if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
             Write-Host "Downloading $archiveName SQL Server $env:SQL_SERVER_EDITION Bootstrap Installer..."
             (New-Object Net.WebClient).DownloadFile($archiveUrl, $archivePath)
         }
-        $sfxPath = "$mediaPath\SQLEXPR_x64_ENU.exe"
+        $sfxPath = "$mediaPath\SQL*ENU.exe"
         if (!(Test-Path $sfxPath)) {
             Write-Host "Downloading SQL Server $env:SQL_SERVER_EDITION setup..."
             &$archivePath `
@@ -73,10 +73,15 @@ if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
     if ($LASTEXITCODE) {
         throw "failed with exit code $LASTEXITCODE"
     }
-} elseif ($env:SQL_SERVER_EDITION -eq 'DEVELOPER') {
-    $archiveUrl = 'https://download.microsoft.com/download/c/c/9/cc9c6797-383c-4b24-8920-dc057c1de9d3/SQL2022-SSEI-Dev.exe'
-    $mediaPath = "C:\vagrant\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)"
-    $setupPath = "c:\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
+} elseif ($env:SQL_SERVER_EDITION -in @('STANDARD-DEVELOPER', 'ENTERPRISE-DEVELOPER')) {
+    $archiveUrl = 'https://download.microsoft.com/download/4ba126fc-a6a0-4810-80e9-c0182d3e1f62/SQL2025-SSEI-EntDev.exe'
+    $mediaPath = "C:\vagrant\tmp\DEVELOPER-$(Get-StringSha256Hash $archiveUrl)"
+    $setupPath = "c:\tmp\DEVELOPER-$(Get-StringSha256Hash $archiveUrl)\setup.exe"
+    $productKey = if ($env:SQL_SERVER_EDITION -eq 'STANDARD-DEVELOPER') {
+        '33333-00000-00000-00000-00000'
+    } else {
+        '22222-00000-00000-00000-00000'
+    }
 
     # download setup.
     if (!(Test-Path $setupPath)) {
@@ -89,7 +94,7 @@ if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
             Write-Host "Downloading $archiveName SQL Server $env:SQL_SERVER_EDITION Bootstrap Installer..."
             (New-Object Net.WebClient).DownloadFile($archiveUrl, $archivePath)
         }
-        $sfxPath = "$mediaPath\SQLServer2022-DEV-x64-ENU.exe"
+        $sfxPath = "$mediaPath\SQL*ENU.exe"
         if (!(Test-Path $sfxPath)) {
             Write-Host "Downloading SQL Server $env:SQL_SERVER_EDITION setup..."
             &$archivePath `
@@ -123,6 +128,7 @@ if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
         /IACCEPTSQLSERVERLICENSETERMS `
         /QUIET `
         /ACTION=Install `
+        /PID=$productKey `
         /FEATURES=SQL `
         /INSTANCEID=$env:SQL_SERVER_INSTANCE_NAME `
         /INSTANCENAME=$env:SQL_SERVER_INSTANCE_NAME `
@@ -142,7 +148,7 @@ $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'Us
 # install the Sql Server PowerShell Module.
 # see https://www.powershellgallery.com/packages/Sqlserver
 # see https://learn.microsoft.com/en-us/powershell/module/sqlserver/?view=sqlserver-ps
-# see https://learn.microsoft.com/en-us/sql/powershell/download-sql-server-ps-module?view=sql-server-ver16
+# see https://learn.microsoft.com/en-us/powershell/sql-server/download-sql-server-ps-module?view=sqlserver-ps
 Write-Host "Installing the SqlServer PowerShell module..."
 Install-Module SqlServer -AllowClobber -RequiredVersion 22.4.5.1
 

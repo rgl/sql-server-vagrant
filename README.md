@@ -1,4 +1,4 @@
-This is an example Vagrant environment for a SQL Server 2022 Express or Developer installation.
+This is an example Vagrant environment for a SQL Server 2025 Express, Standard Developer, or Enterprise Developer installation.
 
 It will:
 
@@ -42,7 +42,7 @@ echo | openssl s_client -connect $COMPUTERNAME:1433 -servername $COMPUTERNAME -C
 
 # Reference
 
-* [TDS 8.0 and TLS 1.3 support](https://learn.microsoft.com/en-us/sql/relational-databases/security/networking/tds-8-and-tls-1-3?view=sql-server-ver16)
+* [TDS 8.0](https://learn.microsoft.com/en-us/sql/relational-databases/security/networking/tds-8?view=sql-server-ver17) and [TLS 1.3 support](https://learn.microsoft.com/en-us/sql/relational-databases/security/networking/tls-1-3?view=sql-server-ver17)
 
 
 # Example queries
