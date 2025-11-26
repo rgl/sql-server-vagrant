@@ -1,2 +1,2 @@
 # see https://pypi.org/project/pyodbc/
-pyodbc==5.2.0
+pyodbc==5.3.0

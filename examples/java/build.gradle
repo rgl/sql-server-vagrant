@@ -1,11 +1,11 @@
-// see https://docs.gradle.org/9.0.0/userguide/java_plugin.html
-// see https://docs.gradle.org/9.0.0/userguide/application_plugin.html
+// see https://docs.gradle.org/9.1.0/userguide/java_plugin.html
+// see https://docs.gradle.org/9.1.0/userguide/application_plugin.html
 // see https://gradleup.com/shadow/
 // see https://github.com/GradleUp/shadow
 
 plugins {
     id 'application'
-    id 'com.gradleup.shadow' version '9.1.0'
+    id 'com.gradleup.shadow' version '9.2.2'
 }
 
 version = '1.0.0'
@@ -15,8 +15,8 @@ application {
 }
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
+    sourceCompatibility = JavaVersion.VERSION_21
+    targetCompatibility = JavaVersion.VERSION_21
 }
 
 repositories {
@@ -24,7 +24,7 @@ repositories {
 }
 
 dependencies {
-    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v13.2.0
-    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/13.2.0.jre11
-    implementation "com.microsoft.sqlserver:mssql-jdbc:13.2.0.jre11"
+    // see https://github.com/microsoft/mssql-jdbc/releases/tag/v13.2.1
+    // see https://mvnrepository.com/artifact/com.microsoft.sqlserver/mssql-jdbc/13.2.1.jre11
+    implementation "com.microsoft.sqlserver:mssql-jdbc:13.2.1.jre11"
 }
