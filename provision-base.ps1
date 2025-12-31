@@ -228,6 +228,19 @@ reg import ConEmu.reg
 [IO.File]::WriteAllText(
     "$env:TEMP\ConfigureTaskbar.ps1",
 @'
+Set-StrictMode -Version Latest
+$ProgressPreference = 'SilentlyContinue'
+$ErrorActionPreference = 'Stop'
+trap {
+    Write-Host "ERROR: $_"
+    ($_.ScriptStackTrace -split '\r?\n') -replace '^(.*)$','ERROR: $1' | Write-Host
+    ($_.Exception.ToString() -split '\r?\n') -replace '^(.*)$','ERROR EXCEPTION: $1' | Write-Host
+    Read-Host 'Press ENTER to exit.'
+    Exit 1
+}
+
+Write-Host 'Configuring the desktop...'
+
 # unpin all applications.
 # NB this can only be done in a logged on session.
 $pinnedTaskbarPath = "$env:APPDATA\Microsoft\Internet Explorer\Quick Launch\User Pinned\TaskBar"
@@ -290,10 +303,18 @@ Install-ChocolateyShortcut `
     -IconLocation C:\tools\msys64\msys2.ico `
     -WorkingDirectory '%USERPROFILE%'
 # add SQL Server Management Studio shortcut to the Desktop.
+$ssmsPath = (
+    @(
+        "C:\Program Files\Microsoft SQL Server Management Studio *"
+        "C:\Program Files (x86)\Microsoft SQL Server"
+    ) `
+    | Get-ChildItem -Recurse -Filter ssms.exe `
+    | Select-Object -First 1
+).FullName
 Install-ChocolateyShortcut `
     -ShortcutFilePath "$env:USERPROFILE\Desktop\SQL Server Management Studio.lnk" `
-    -TargetPath 'C:\Program Files (x86)\Microsoft SQL Server\140\Tools\Binn\ManagementStudio\Ssms.exe'
+    -TargetPath $ssmsPath
 '@)
 New-Item -Path HKCU:Software\Microsoft\Windows\CurrentVersion\RunOnce -Force `
-    | New-ItemProperty -Name ConfigureTaskbar -Value 'PowerShell -WindowStyle Hidden -File "%TEMP%\ConfigureTaskbar.ps1"' -PropertyType ExpandString `
+    | New-ItemProperty -Name ConfigureTaskbar -Value 'PowerShell -WindowStyle Maximized -File "%TEMP%\ConfigureTaskbar.ps1"' -PropertyType ExpandString `
     | Out-Null
