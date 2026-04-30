@@ -14,8 +14,8 @@ function Get-StringSha256Hash {
 # install sql server.
 # see https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 # see https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-ver17
-# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Express/
-# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2022/Developer/
+# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2025/Express/
+# see https://github.com/microsoft/winget-pkgs/tree/master/manifests/m/Microsoft/SQLServer/2025/Developer/
 if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
     $archiveUrl = 'https://download.microsoft.com/download/7ab8f535-7eb8-4b16-82eb-eca0fa2d38f3/SQL2025-SSEI-Expr.exe'
     $mediaPath = "C:\vagrant\tmp\$env:SQL_SERVER_EDITION-$(Get-StringSha256Hash $archiveUrl)"

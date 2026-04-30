@@ -1,1 +1,1 @@
-mssql-python==1.1.0 # see https://pypi.org/project/mssql-python/
+mssql-python==1.6.0 # see https://pypi.org/project/mssql-python/
