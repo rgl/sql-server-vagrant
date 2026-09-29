@@ -5,11 +5,11 @@ $useWindowsTrustStore = $true
 # see https://community.chocolatey.org/packages/temurin25
 # see https://community.chocolatey.org/packages/gradle
 choco install -y temurin25
-choco install -y gradle --version 9.4.1
+choco install -y gradle --version 9.8.0
 
 # install the SQL Server JDBC Auth driver.
 # see https://github.com/Microsoft/mssql-jdbc
-$archiveVersion = '13.4.0'
+$archiveVersion = '13.6.0'
 $archiveUrl = "https://github.com/microsoft/mssql-jdbc/releases/download/v$archiveVersion/mssql-jdbc_auth.zip"
 $archivePath = "$env:TEMP\mssql-jdbc_auth-$archiveVersion.zip"
 if (Test-Path $archivePath) {

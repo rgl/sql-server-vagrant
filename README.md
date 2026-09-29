@@ -20,7 +20,7 @@ It will:
 
 # Usage
 
-Install the [Windows 2022 UEFI base box](https://github.com/rgl/windows-vagrant).
+Install the [Windows 2025 UEFI base box](https://github.com/rgl/windows-vagrant).
 
 Choose the SQL Server edition by editing the [`$env:SQL_SERVER_EDITION` variable](provision-sql-server-common.ps1) (defaults to SQL Server Express).
 
