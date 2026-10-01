@@ -11,6 +11,25 @@ function Get-StringSha256Hash {
     return $hashString.ToLower()
 }
 
+function Restart-SqlServer {
+    Write-Host "Restarting SQL Server..."
+    Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force
+    while ($true) {
+        try {
+            $server = New-Object Microsoft.SqlServer.Management.Smo.Server $env:SQL_SERVER_INSTANCE
+            $result = $server.ConnectionContext.ExecuteWithResults("select 1 as value")
+            if ($result.Tables[0].value -ne 1) {
+                throw "unexpected canary query result"
+            }
+            Write-Host "SQL Server is ready."
+            break
+        } catch {
+            Write-Host "SQL Server is not yet ready ($_)..."
+            Start-Sleep -Seconds 2
+        }
+    }
+}
+
 # install sql server.
 # see https://www.microsoft.com/en-us/sql-server/sql-server-downloads
 # see https://learn.microsoft.com/en-us/sql/database-engine/install-windows/install-sql-server-from-the-command-prompt?view=sql-server-ver17
@@ -169,7 +188,7 @@ $tcp.IPAddresses | Where-Object { $_.Name -eq 'IPAll' } | ForEach-Object {
     }
 }
 $tcp.Alter()
-Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force
+Restart-SqlServer
 
 Write-Host 'Enabling Mixed Mode Authentication...'
 $server = New-Object Microsoft.SqlServer.Management.Smo.Server $env:SQL_SERVER_INSTANCE
@@ -225,7 +244,7 @@ $testUsers | ForEach-Object {$i=0} { if ([bool]($i++ % 2)) {$_}} | ForEach-Objec
 }
 
 # restart it to be able to use the recently added users.
-Restart-Service $env:SQL_SERVER_SERVICE_NAME -Force
+Restart-SqlServer
 
 Write-Host 'Creating the firewall rule to allow inbound TCP/IP access to the SQL Server port 1443...'
 New-NetFirewallRule `
