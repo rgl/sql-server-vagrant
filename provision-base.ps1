@@ -85,6 +85,40 @@ New-Item -Path HKLM:Software\Policies\Microsoft\Windows\Personalization -Force `
     | New-ItemProperty -Name PersonalColors_Accent -Value '#007acc' `
     | Out-Null
 
+# configure microsoft edge.
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/hidefirstrunexperience
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/syncdisabled
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/restoreonstartup
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/restoreonstartupurls
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/homepagelocation
+# see https://learn.microsoft.com/en-us/deployedge/microsoft-edge-browser-policies/newtabpagelocation
+$edgePolicyPath = "HKLM:\SOFTWARE\Policies\Microsoft\Edge"
+$edgeRestoreOnStartupPath = "$edgePolicyPath\RestoreOnStartupURLs"
+if (-not (Test-Path $edgePolicyPath)) {
+    New-Item -Path $edgePolicyPath -Force | Out-Null
+}
+Set-ItemProperty -Path $edgePolicyPath -Name HideFirstRunExperience -Value 1
+Set-ItemProperty -Path $edgePolicyPath -Name SyncDisabled -Value 1
+# NB when this PC is not joined to a domain, the following registry properties
+#    will be ignored (see edge://policy); thou, initial_preferences file works.
+Set-ItemProperty -Path $EdgePolicyPath -Name HomepageLocation -Value "about:blank"
+Set-ItemProperty -Path $EdgePolicyPath -Name NewTabPageLocation -Value "about:blank"
+Set-ItemProperty -Path $edgePolicyPath -Name RestoreOnStartup -Value 4
+if (-not (Test-Path $edgeRestoreOnStartupPath)) {
+    New-Item -Path $edgeRestoreOnStartupPath -Force | Out-Null
+}
+Set-ItemProperty -Path $edgeRestoreOnStartupPath -Name "1" -Value "about:blank"
+Set-Content -Path "C:\Program Files (x86)\Microsoft\Edge\Application\initial_preferences" -Value @'
+{
+  "session": {
+    "restore_on_startup": 4,
+    "startup_urls": [
+      "about:blank"
+    ]
+  }
+}
+'@
+
 # add support for installing powershell modules from powershellgallery.
 Install-PackageProvider -Name NuGet -MinimumVersion 2.8.5.201 -Force | Out-Null
 Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
