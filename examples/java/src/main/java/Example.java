@@ -13,17 +13,20 @@ public class Example {
         System.out.printf("Java Security Providers: %s.%n", String.join(", ", securityProviders));
 
         String integratedSecurityConnectionString = String.format(
-            "jdbc:sqlserver://%s:1433;database=master;integratedSecurity=true",
+            "jdbc:sqlserver://%s:1433;database=master;integratedSecurity=true;applicationName=Java Example",
             System.getenv("COMPUTERNAME"));
 
         System.out.println("SQL Server Version:");
         System.out.println(queryScalar(integratedSecurityConnectionString, "select @@version"));
 
+        System.out.println("SQL Server Client Application Name:");
+        System.out.println(queryScalar(integratedSecurityConnectionString, "select app_name()"));
+
         System.out.println("SQL Server User Name (integrated authentication credentials; TCP/IP connection):");
         System.out.println(queryScalar(integratedSecurityConnectionString, "select suser_name()"));
 
         String connectionString = String.format(
-            "jdbc:sqlserver://%s:1433;database=master;user=alice.doe;password=HeyH0Password",
+            "jdbc:sqlserver://%s:1433;database=master;user=alice.doe;password=HeyH0Password;applicationName=Java Example",
             System.getenv("COMPUTERNAME"));
 
         System.out.println("SQL Server User Name (alice.doe; username/password credentials; TCP/IP connection):");

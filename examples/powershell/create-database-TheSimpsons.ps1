@@ -101,6 +101,7 @@ try {
 }
 
 # execute the GetTotalCharactersByGender stored procedure.
+Write-Host 'Executing the GetTotalCharactersByGender stored procedure...'
 'male','female' | ForEach-Object {
     $r = Invoke-Sqlcmd `
         -ServerInstance $env:SQL_SERVER_INSTANCE `
