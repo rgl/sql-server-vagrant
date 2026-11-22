@@ -27,7 +27,7 @@ Choose the SQL Server edition by editing the [`$env:SQL_SERVER_EDITION` variable
 Launch the environment with:
 
 ```bash
-vagrant up --no-destroy-on-error
+vagrant up --no-destroy-on-error | tee provision.log
 ```
 
 Login into the Windows VM, open ConEmu/bash, and dump the SQL Server TLS details:
