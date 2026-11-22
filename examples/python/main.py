@@ -9,10 +9,13 @@ def sql_execute_scalar(connection_string, sql):
             cursor.execute(sql)
             return cursor.fetchval()
 
-connection_string = 'Server=%s,1433;Database=master;UID=alice.doe;PWD=HeyH0Password' % os.environ['COMPUTERNAME']
+connection_string = 'Server=%s,1433;Database=master;UID=alice.doe;PWD=HeyH0Password;APP=Python Example' % os.environ['COMPUTERNAME']
 
 print('SQL Server Version:')
 print(sql_execute_scalar(connection_string, 'select @@version'))
+
+print('SQL Server Client Application Name:')
+print(sql_execute_scalar(connection_string, 'select app_name()'))
 
 print('SQL Server User Name (alice.doe; username/password credentials; TCP/IP connection):')
 print(sql_execute_scalar(connection_string, 'select suser_name()'))
