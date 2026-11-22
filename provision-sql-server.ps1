@@ -159,8 +159,11 @@ if ($env:SQL_SERVER_EDITION -eq 'EXPRESS') {
     throw "unsupported sql server edition: $env:SQL_SERVER_EDITION"
 }
 
-# update $env:PSModulePath to include the modules installed by recently installed package.
-$env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
+# install the Carbon.Cryptography PowerShell module.
+# see https://www.powershellgallery.com/packages/Carbon.Cryptography
+# see https://github.com/webmd-health-services/Carbon.Cryptography
+Write-Host "Installing the Carbon.Cryptography PowerShell module..."
+Install-Module -Name Carbon.Cryptography -RequiredVersion 3.6.0 -Force
 
 # install the Sql Server PowerShell Module.
 # see https://www.powershellgallery.com/packages/Sqlserver
@@ -168,6 +171,12 @@ $env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'Us
 # see https://learn.microsoft.com/en-us/powershell/sql-server/download-sql-server-ps-module?view=sqlserver-ps
 Write-Host "Installing the SqlServer PowerShell module..."
 Install-Module SqlServer -AllowClobber -RequiredVersion 22.4.5.1
+
+# update $env:PSModulePath to include the modules installed by recently installed package.
+$env:PSModulePath = "$([Environment]::GetEnvironmentVariable('PSModulePath', 'User'));$([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine'))"
+
+# load the Carbon.Cryptography PowerShell module.
+Import-Module Carbon.Cryptography
 
 # load the SQL Server PowerShell provider and related Smo .NET assemblies.
 Import-Module SqlServer
